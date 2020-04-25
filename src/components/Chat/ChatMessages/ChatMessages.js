@@ -5,7 +5,7 @@ import { AvatarElips } from '../../AvatarElips'
 
 import s from '../styles.scss'
 
-const ChatMessages = (messages) => {
+const ChatMessages = ({ messages }) => {
   const chatRef = useRef(null)
 
   const chatAutoScroll = () => {
