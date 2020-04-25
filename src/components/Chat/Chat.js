@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
+import sendSocket from '../../utils/sendSocket'
 
 import s from './styles.scss'
 import SvgIcon from '../SvgIcon/SvgIcon'
@@ -25,7 +26,13 @@ const Chat = (props) => {
       user: {
         user: { auth },
       },
+      ws,
     } = props
+
+    const sendMessage = () => {
+      sendSocket(ws, 3, { method: 'chat.send', parameters: { message: chat } }, 'chatSend')
+      return setChat('')
+    }
 
     return auth ? (
       <div className={s.chat_form}>
@@ -35,7 +42,7 @@ const Chat = (props) => {
           placeholder={lang && lang['chat.area']}
           onInput={(evt) => setChat(evt.target.value)}
         ></textarea>
-        <button>
+        <button onClick={() => sendMessage()}>
           <SvgIcon icon="send" classes={s.chat_form_icon} />
         </button>
       </div>
@@ -48,11 +55,11 @@ const Chat = (props) => {
     )
   }
 
-  const { messages } = props
+  const { messages, online } = props
 
   return (
     <div className={s.chat}>
-      {header()}
+      {header(online)}
       {ChatMessages(messages)}
       {chatForm()}
     </div>
