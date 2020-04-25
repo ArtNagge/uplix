@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import sendSocket from '../../utils/sendSocket'
 
@@ -8,43 +8,64 @@ import SvgIcon from '../SvgIcon/SvgIcon'
 import { ChatMessages } from './ChatMessages'
 import clearMethod from '../../utils/clearMethod'
 
-const header = (online = 0) => {
-  return (
-    <div className={s.chat_header}>
-      <span className={s.chat_header_heading}>Онлайн чат</span>
-      <span className={s.chat_header_online}>{online}</span>
-    </div>
-  )
-}
+class Chat extends PureComponent {
+  state = {
+    chat: '',
+  }
 
-const Chat = (props) => {
-  const [chat, setChat] = useState('')
-  const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
+  get header() {
+    const { online = 0 } = this.props
+    return (
+      <div className={s.chat_header}>
+        <span className={s.chat_header_heading}>Онлайн чат</span>
+        <span className={s.chat_header_online}>{online}</span>
+      </div>
+    )
+  }
 
-  const chatForm = () => {
+  sendMessage = (evt) => {
+    evt.preventDefault()
+    const { chat } = this.state
+    const { ws } = this.props
+
+    this.setState({ chat: '' }, sendSocket(ws, 3, { method: 'chat.send', parameters: { message: chat } }, 'chatSend'))
+  }
+
+  handleInput = (e) => {
+    const { value } = e.target
+    this.setState({ chat: value })
+  }
+
+  keyDown = (e) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault()
+      this.sendMessage(e)
+    }
+  }
+
+  get chatForm() {
     const {
       user: {
         user: { auth },
       },
-      ws,
-    } = props
-
-    const sendMessage = () => {
-      sendSocket(ws, 3, { method: 'chat.send', parameters: { message: chat } }, 'chatSend')
-      return setChat('')
-    }
+      lang,
+    } = this.props
+    const { chat } = this.state
 
     return auth ? (
       <div className={s.chat_form}>
-        <textarea
-          type="text"
-          value={chat.value}
-          placeholder={lang && lang['chat.area']}
-          onInput={(evt) => setChat(evt.target.value)}
-        ></textarea>
-        <button onClick={() => sendMessage()}>
-          <SvgIcon icon="send" classes={s.chat_form_icon} />
-        </button>
+        <form onSubmit={this.sendMessage}>
+          <textarea
+            type="text"
+            value={chat}
+            placeholder={lang && lang['chat.area']}
+            onChange={this.handleInput}
+            onKeyDown={this.keyDown}
+          ></textarea>
+          <button>
+            <SvgIcon icon="send" classes={s.chat_form_icon} />
+          </button>
+        </form>
       </div>
     ) : (
       <div className={s.chat_form}>
@@ -55,15 +76,17 @@ const Chat = (props) => {
     )
   }
 
-  const { messages, online } = props
+  render() {
+    const { messages } = this.props
 
-  return (
-    <div className={s.chat}>
-      {header(online)}
-      {ChatMessages(messages)}
-      {chatForm()}
-    </div>
-  )
+    return (
+      <div className={s.chat}>
+        {this.header}
+        <ChatMessages messages={messages} />
+        {this.chatForm}
+      </div>
+    )
+  }
 }
 
 Chat.propTypes = {
@@ -77,4 +100,6 @@ Chat.propTypes = {
   }),
 }
 
-export default Chat
+const mapStateToProps = ({ lang: { data: lang } }) => ({ lang })
+
+export default connect(mapStateToProps, {})(Chat)
