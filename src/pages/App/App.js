@@ -54,7 +54,7 @@ class App extends PureComponent {
     this.ws.onmessage = (data) => {
       const { data: response } = data
       const info = JSON.parse(response)
-      console.log(info)
+      // console.log(info)
 
       switch (info.seq || info.channel) {
         case 'online': {

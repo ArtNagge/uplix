@@ -16,6 +16,7 @@ const chat = ({ message, time, user }) => (dispatch) => {
 
   try {
     const payload = {
+      id: user.id,
       message,
       time,
       user,

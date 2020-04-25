@@ -120,6 +120,12 @@ export default function (state = jackpot, action) {
         timer: { ...state.timer, start: true },
       }
     }
+    case 'CHANGE_TIMER': {
+      return {
+        ...state,
+        timer: { ...state.timer, time: action.payload },
+      }
+    }
     case 'JACKPOT_REOPEN': {
       return {
         ...state,

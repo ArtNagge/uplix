@@ -7,12 +7,11 @@ import sendSocket from '../../utils/sendSocket'
 import s from './styles.scss'
 import SvgIcon from '../SvgIcon/SvgIcon'
 
-const Jackpot = ({ percent, result, timer, total }) => {
+const Jackpot = ({ percent, result, timer, total, changeTimer }) => {
   const svgRef = useRef(null)
   const jackpotRef = useRef(null)
   const jackpotBorderRef = useRef(null)
 
-  const [timerState, setTimerState] = useState(1)
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
 
   // componentDidMount
@@ -28,11 +27,12 @@ const Jackpot = ({ percent, result, timer, total }) => {
     circleBorder.style.strokeDashoffset = circumference - 10
 
     progress(percent)
-    setTimerState(timer.time)
+    console.log(timer)
+    changeTimer(timer.time)
   }, [timer.start])
 
   useEffect(() => {
-    setTimerState(timer.time)
+    changeTimer(timer.time)
   }, [timer.time])
 
   // updateTimer
@@ -41,16 +41,16 @@ const Jackpot = ({ percent, result, timer, total }) => {
     let interval
     if (timer.start) {
       interval = setInterval(() => {
-        setTimerState((timerState) => timerState - 1)
+        changeTimer(timer.time - 1)
       }, 1000)
     }
 
-    if (timerState <= 0) {
+    if (timer.time <= 0) {
       clearInterval(interval)
     }
 
     return () => clearInterval(interval)
-  }, [timer.start, timerState])
+  }, [timer.start, timer.time])
 
   useEffect(() => {
     progress(percent)
@@ -78,14 +78,14 @@ const Jackpot = ({ percent, result, timer, total }) => {
 
   const timerBlock = () => {
     const initTimer = 20
-    const currentTimerWidth = 100 - (initTimer - timerState) * 5
+    const currentTimerWidth = 100 - (initTimer - timer.time) * 5
 
     return (
       <div className={s.jackpot_game_info_timer}>
         <div className={s.jackpot_game_info_timer_counter}>
           <div className={s.jackpot_game_info_timer_counter_container}>
-            <div className={s.jackpot_game_info_timer_counter_1}>{parseInt(timerState / 10)}</div>
-            <div className={s.jackpot_game_info_timer_counter_2}>{timerState % 10}</div>
+            <div className={s.jackpot_game_info_timer_counter_1}>{parseInt(timer.time / 10)}</div>
+            <div className={s.jackpot_game_info_timer_counter_2}>{timer.time % 10}</div>
           </div>
           <span>{checkLang(lang, 'time')}</span>
         </div>

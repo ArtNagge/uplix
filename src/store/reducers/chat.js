@@ -4,7 +4,7 @@ export default function (state = chat, action) {
   const { type, payload } = action
   switch (type) {
     case 'CHAT_SUCCESS': {
-      return payload.map((m) => ({ message: m.message, time: m.time, user: m.user }))
+      return payload.map((m) => ({ id: m.user.id, message: m.message, time: m.time, user: m.user }))
     }
     case 'CHAT_MESSAGE_SUCCESS': {
       return [payload, ...state]

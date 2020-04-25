@@ -21,7 +21,7 @@ const ChatMessages = ({ messages }) => {
       <div className={s.chat_messages_container}>
         {messages.map((m, index) => (
           <div className={s.chat_message} key={index}>
-            {AvatarElips(m.user.picture, 40, 40)}
+            <a href={`/profile/${m.id}`}>{AvatarElips(m.user.picture, 40, 40)}</a>
             <div className={s.chat_message_info}>
               <span>{`${m.user.name}: `}</span>
               {m.message}

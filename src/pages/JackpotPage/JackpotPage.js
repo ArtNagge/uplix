@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import { connect } from 'react-redux'
 import Jackpot from '../../components/Jackpot/Jackpot'
+import { changeTimer } from '../../store/actions/jackpotAction'
 import React, { PureComponent, createRef } from 'react'
 import sendSocket from '../../utils/sendSocket'
 
@@ -187,7 +188,7 @@ class JackpotPage extends PureComponent {
   }
 
   render() {
-    const { bets, lang, history, timer, result, topDay } = this.props
+    const { bets, lang, history, timer, result, topDay, changeTimer } = this.props
     const { purple, pink } = bets
 
     const pinkTotal = pink.reduce((a, { bets }) => a + Number(bets), 0).toFixed(1)
@@ -225,7 +226,7 @@ class JackpotPage extends PureComponent {
               </div>
             </div>
           </div>
-          <Jackpot total={total} timer={timer} percent={percent} result={result} />
+          <Jackpot total={total} timer={timer} changeTimer={changeTimer} percent={percent} result={result} />
           <div className={s.jackpot_rightBlock}>
             <div className={s.jackpot_rightBlock_top}>
               <div className={cn(s.header_top, s.header_right)}>
@@ -286,4 +287,4 @@ const mapStateToProps = ({
   }
 }
 
-export default connect(mapStateToProps, {})(JackpotPage)
+export default connect(mapStateToProps, { changeTimer })(JackpotPage)

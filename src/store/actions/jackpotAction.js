@@ -49,4 +49,8 @@ const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_histo
   }
 }
 
-export { getJackpot, makeBet }
+const changeTimer = (time) => (dispatch) => {
+  dispatch({ type: 'CHANGE_TIMER', payload: time })
+}
+
+export { getJackpot, makeBet, changeTimer }
