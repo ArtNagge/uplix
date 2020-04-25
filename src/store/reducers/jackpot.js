@@ -6,9 +6,9 @@ const jackpot = {
     pink: [],
   },
   topDay: {
-    name: 'Гринберг Ян',
-    avatar: 'https://sun9-35.userapi.com/c851336/v851336611/1602c1/n9_P4A8hTxY.jpg',
-    win: 1140,
+    name: '---',
+    avatar: '',
+    win: 0,
   },
   timer: { time: 20, start: false },
   odds: {
@@ -37,8 +37,17 @@ export default function (state = jackpot, action) {
         bets: { ...state.bets, ...action.payload.bets },
         ...(action.payload.time && { timer: { time, start: true } }),
         odds: action.payload.odds,
+        history: action.payload.history,
+        topDay: {
+          name: action.payload.day_top.user.name,
+          avatar: action.payload.day_top.user.picture,
+          win: action.payload.day_top.amount,
+        },
         request: 'JACKPOT_SUCCESS',
       }
+    }
+    case 'JACKPOT_HISTORY': {
+      return { ...state, history: action.payload }
     }
     case 'JACKPOT_FAIL': {
       return {

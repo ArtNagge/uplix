@@ -83,7 +83,7 @@ class JackpotPage extends PureComponent {
         <div className={cn(s.jackpot_bet, s.jackpot_bet_pink)}>
           <div className={s.jackpot_bet_color} />
           <div className={s.jackpot_bet_header}>
-            {checkLang(lang, 'coefficient').toUpperCase()} <b>Х{odds.pink}</b>
+            {checkLang(lang, 'coefficient').toUpperCase()} <b>Х{odds.pink.toFixed(2)}</b>
           </div>
           <div className={s.jackpot_bet_container}>
             <div className={s.jackpot_bet_container_header}>
@@ -108,7 +108,7 @@ class JackpotPage extends PureComponent {
         <div className={cn(s.jackpot_bet, s.jackpot_bet_purple)}>
           <div className={s.jackpot_bet_color} />
           <div className={s.jackpot_bet_header}>
-            {checkLang(lang, 'coefficient').toUpperCase()} <b>Х{odds.purple}</b>
+            {checkLang(lang, 'coefficient').toUpperCase()} <b>Х{odds.purple.toFixed(2)}</b>
           </div>
           <div className={s.jackpot_bet_container}>
             <div className={s.jackpot_bet_container_header}>
