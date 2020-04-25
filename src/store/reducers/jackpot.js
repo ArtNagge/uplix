@@ -1,0 +1,133 @@
+import dayjs from 'dayjs'
+
+const jackpot = {
+  bets: {
+    purple: [],
+    pink: [],
+  },
+  topDay: {
+    name: 'Гринберг Ян',
+    avatar: 'https://sun9-35.userapi.com/c851336/v851336611/1602c1/n9_P4A8hTxY.jpg',
+    win: 1140,
+  },
+  timer: { time: 20, start: false },
+  odds: {
+    pink: 2,
+    purple: 2,
+  },
+  history: [],
+  result: 0,
+  request: undefined,
+}
+
+export default function (state = jackpot, action) {
+  switch (action.type) {
+    case 'JACKPOT_REQUEST': {
+      return {
+        ...state,
+        request: 'JACKPOT_REQUEST',
+      }
+    }
+    case 'JACKPOT_SUCCESS': {
+      const difference = 20 - (dayjs().unix() - action.payload.time)
+      const time = difference <= 0 ? 0 : difference
+
+      return {
+        ...state,
+        bets: { ...state.bets, ...action.payload.bets },
+        ...(action.payload.time && { timer: { time, start: true } }),
+        odds: action.payload.odds,
+        request: 'JACKPOT_SUCCESS',
+      }
+    }
+    case 'JACKPOT_FAIL': {
+      return {
+        ...state,
+        request: 'JACKPOT_FAIL',
+      }
+    }
+
+    case 'BET_REQUEST': {
+      return {
+        ...state,
+        request: 'JACKPOT_REQUEST',
+      }
+    }
+    case 'BET_SUCCESS': {
+      const { bet, odds } = action.payload
+      const { color, user, amount } = bet
+      const colorBets = state.bets[color]
+      const currentBet = colorBets.find(({ user: { id } }) => id === user.id)
+      const indexCurrentBet = currentBet && colorBets.findIndex(({ user: { id } }) => id === user.id)
+      const newItem = {
+        user: currentBet ? currentBet.user : user,
+        bets: currentBet ? Number(currentBet.bets) + Number(amount) : Number(amount),
+      }
+
+      const newArr = transform(colorBets, newItem, currentBet ? indexCurrentBet : -1).sort((a, b) => b.bet - a.bet)
+
+      return {
+        ...state,
+        bets: { ...state.bets, [color]: newArr },
+        odds: odds,
+        request: 'JACKPOT_SUCCESS',
+      }
+    }
+    case 'BET_RESULT_SUCCESS': {
+      return {
+        ...state,
+        timer: { time: 0, start: false },
+        result: action.payload,
+      }
+    }
+    case 'BET_FAIL': {
+      return {
+        ...state,
+        request: 'JACKPOT_FAIL',
+      }
+    }
+    case 'JACKPOT_RESULT_REQUEST': {
+      return {
+        ...state,
+        request: 'JACKPOT_RESULT_REQUEST',
+      }
+    }
+    case 'JACKPOT_RESULT_SUCCESS': {
+      return {
+        ...state,
+        result: action.payload.result,
+        request: 'JACKPOT_RESULT_SUCCESS',
+      }
+    }
+    case 'JACKPOT_RESULT_FAIL': {
+      return {
+        ...state,
+        request: 'JACKPOT_RESULT_FAIL',
+      }
+    }
+    case 'TIMER_START': {
+      return {
+        ...state,
+        timer: { ...state.timer, start: true },
+      }
+    }
+    case 'JACKPOT_REOPEN': {
+      return {
+        ...state,
+        bets: jackpot.bets,
+        odds: jackpot.odds,
+        timer: jackpot.timer,
+        result: 0,
+      }
+    }
+    default:
+      return state
+  }
+}
+
+function transform(allPosts, item, idx) {
+  if (idx < 0) {
+    return [...allPosts, item]
+  }
+  return [...allPosts.slice(0, idx), item, ...allPosts.slice(idx + 1)]
+}

@@ -1,0 +1,69 @@
+@import '../../theme/variables.scss';
+
+.faq {
+  &_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 40px;
+
+    &_heading {
+      font-size: 20px;
+      color: $default_white;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    &_container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 36px 20px 0 20px;
+    }
+
+    &_item {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 23px 18px;
+      background: $gray_02;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+
+      &_description {
+        margin-top: 20px;
+        font-weight: 400;
+        font-size: 16px;
+        color: $default_white;
+      }
+
+      &_title {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        &_icon {
+          width: 30px;
+          height: 21px;
+
+          &_active {
+            transform: rotate(180deg);
+          }
+        }
+
+        span {
+          width: 85%;
+          font-weight: 500;
+          font-size: 16px;
+          color: $default_white;
+          text-align: left;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+@import '../../theme/variables.scss';
+
+.leaderboard {
+  &_user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    padding-left: 118px;
+    border-radius: 10px;
+    background-color: $gray_02;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 10px;
+
+    &_active {
+      background-color: rgba($color: $purple_01, $alpha: 0.3);
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 5px;
+        display: block;
+        background-color: $purple_01;
+      }
+    }
+
+    &:nth-child(1) {
+      .leaderboard_user_place_pl {
+        background-color: rgba($color: $purple_02, $alpha: 0.5);
+        border: solid 1px $purple_02;
+      }
+    }
+    &:nth-child(2) {
+      .leaderboard_user_place_pl {
+        background-color: rgba($color: $purple_01, $alpha: 0.5);
+        border: solid 1px $purple_01;
+      }
+    }
+    &:nth-child(3) {
+      .leaderboard_user_place_pl {
+        background-color: rgba($color: $purple_03, $alpha: 0.5);
+        border: solid 1px $purple_03;
+      }
+    }
+
+    &_place,
+    &_income,
+    &_refs,
+    &_gamer {
+      flex-shrink: 0;
+    }
+
+    &_place {
+      width: 20%;
+
+      &_pl {
+        transform: skewX(-10deg);
+        border-radius: 5px;
+        width: 50px;
+        height: 22px;
+        background-color: rgba($color: $gray_06, $alpha: 0.5);
+        box-sizing: border-box;
+        border: solid 1px $gray_06;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+          font-size: 14px;
+          font-weight: 500;
+          color: $default_white;
+          text-align: center;
+          transform: skewX(10deg);
+          display: block;
+        }
+      }
+    }
+
+    &_income {
+      width: 20%;
+
+      span {
+        font-weight: 500;
+        font-size: 14px;
+        color: $default_white;
+        text-align: left;
+      }
+    }
+
+    &_refs {
+      width: 25%;
+      span {
+        font-weight: 500;
+        font-size: 14px;
+        color: $default_white;
+        text-align: left;
+      }
+    }
+
+    &_gamer {
+      width: 35%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+
+      span {
+        font-weight: 500;
+        font-size: 14px;
+        color: $default_white;
+        text-align: left;
+      }
+
+      &_img {
+        width: 22px;
+        height: 22px;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-right: 10px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

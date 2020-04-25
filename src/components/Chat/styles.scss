@@ -1,0 +1,177 @@
+@import '../../theme/variables.scss';
+
+.chat {
+  width: 415px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  background-color: $gray_02;
+
+  & > * {
+    z-index: 1;
+    position: relative;
+  }
+
+  &:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: block;
+    z-index: 0;
+    background: url(./img/dot.png);
+  }
+
+  &_header {
+    width: 100%;
+    height: 65px;
+    background-color: $gray_04;
+    box-sizing: border-box;
+    padding: 0 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &_heading,
+    &_online {
+      color: $default_white;
+      font-size: 16px;
+      font-weight: 700;
+      position: relative;
+    }
+
+    &_online {
+      display: flex;
+      align-items: center;
+      &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        right: calc(100% + 6px);
+        border-radius: 50%;
+        position: absolute;
+        background-color: $purple_01;
+        animation: onlineShadow 3s ease-in-out infinite;
+      }
+    }
+  }
+
+  &_messages {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0px 20px;
+    overflow: hidden;
+    overflow-y: auto;
+    position: relative;
+
+    &_container {
+      width: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+
+  &_message {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: 25px;
+
+    &_info {
+      font-size: 16px;
+      font-weight: 400;
+      color: $default_white;
+      line-height: 1.2;
+      text-align: left;
+      margin-top: 8px;
+      margin-left: 10px;
+
+      span {
+        font-weight: 500;
+        color: $purple_01;
+      }
+    }
+  }
+
+  &_form {
+    width: 100%;
+    height: 80px;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 20px;
+    margin: 20px 0;
+
+    &_icon {
+      width: 19px;
+      height: 17px;
+    }
+
+    &_dontAuth {
+      text-align: center;
+      color: 14px;
+      padding: 15px !important;
+    }
+
+    textarea,
+    &_dontAuth {
+      width: 100%;
+      height: 100%;
+      border: none;
+      resize: none;
+      color: $gray_06;
+      font-size: 16px;
+      border-radius: 10px;
+      box-sizing: border-box;
+      background-color: $gray_04;
+      padding: 15px 45px 15px 15px;
+    }
+
+    button {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      z-index: 1;
+
+      svg {
+        path {
+          transition: 0.2s ease;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: $purple_01;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes onlineShadow {
+  0% {
+    box-shadow: 0px 0px 7px 6px rgba($color: $purple_01, $alpha: 0.2);
+  }
+  50% {
+    box-shadow: 0px 0px 0px 0px rgba($color: $purple_01, $alpha: 0.2);
+  }
+  100% {
+    box-shadow: 0px 0px 7px 6px rgba($color: $purple_01, $alpha: 0.2);
+  }
+}
