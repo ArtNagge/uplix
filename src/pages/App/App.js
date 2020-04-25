@@ -6,6 +6,7 @@ import { Sidebar } from '../../components/Sidebar'
 import { Chat } from '../../components/Chat'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { getUserInfo, logoutUser, authUser, getBalance } from '../../store/actions/userAction'
+import { initChat, chat } from '../../store/actions/chatAction'
 import { getJackpot, makeBet } from '../../store/actions/jackpotAction'
 import { getLangResourse, getStorageResourse } from '../../store/actions/langAction'
 import ReconnectingWebSocket from 'reconnecting-websocket'
@@ -18,12 +19,23 @@ class App extends PureComponent {
     socketAuth: false,
     subscribes: [],
     connect: 1,
+    online: 0,
   }
 
   ws = new ReconnectingWebSocket('wss://uptest.work:2087/', null, { debug: false, reconnectInterval: 2000 })
 
   componentDidMount() {
-    const { getLangResourse, getStorageResourse, authUser, getUserInfo, getJackpot, makeBet, getBalance } = this.props
+    const {
+      getLangResourse,
+      getStorageResourse,
+      authUser,
+      getUserInfo,
+      getJackpot,
+      makeBet,
+      getBalance,
+      initChat,
+      chat,
+    } = this.props
 
     const lang_hash = localStorage.getItem('lang_hash')
     const lang_source = localStorage.getItem('lang_source')
@@ -31,7 +43,10 @@ class App extends PureComponent {
 
     this.ws.onopen = () => {
       sendSocket(this.ws, 1, access_token || 1, 'getUser')
+      sendSocket(this.ws, 3, { method: 'chat.history' }, 'chatHistory')
       sendSocket(this.ws, 2, this.state.subscribes)
+
+      this.addSubscribe('online')
 
       this.setState({ socketAuth: true })
     }
@@ -42,6 +57,16 @@ class App extends PureComponent {
       console.log(info)
 
       switch (info.seq || info.channel) {
+        case 'online': {
+          this.setState({ online: info.message })
+        }
+        case 'chatHistory': {
+          this.addSubscribe('chat')
+          return initChat(info)
+        }
+        case 'chat': {
+          return chat(info.message)
+        }
         case 'wheel': {
           return makeBet(info.message)
         }
@@ -108,7 +133,7 @@ class App extends PureComponent {
   }
 
   render() {
-    const { socketAuth, connect } = this.state
+    const { socketAuth, connect, online } = this.state
     const { messages, user, logoutUser } = this.props
     return (
       <Router>
@@ -137,7 +162,7 @@ class App extends PureComponent {
               })}
             </Switch>
           </div>
-          <Chat user={user} messages={messages} />
+          <Chat online={online} ws={this.ws} user={user} messages={messages} />
         </div>
       </Router>
     )
@@ -157,4 +182,6 @@ export default connect(mapStateToProps, {
   authUser,
   makeBet,
   getBalance,
+  initChat,
+  chat,
 })(App)
