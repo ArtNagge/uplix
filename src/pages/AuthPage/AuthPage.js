@@ -5,9 +5,9 @@ import sendSocket from '../../utils/sendSocket'
 
 class AuthPage extends PureComponent {
   render() {
-    const { wsConnect, ws, auth } = this.props
+    const { connect, ws, auth } = this.props
 
-    if (wsConnect) {
+    if (connect) {
       const url = new URL(window.location.href)
       const requestCode = url.search.split('=')[1]
       const auth_data = { code: requestCode }
@@ -22,8 +22,9 @@ const mapStateToProps = ({
   user: {
     user: { auth },
   },
+  socket: { ws, connect },
 }) => {
-  return { auth }
+  return { auth, ws, connect }
 }
 
 export default connect(mapStateToProps, {})(AuthPage)

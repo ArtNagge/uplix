@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import sendSocket from '../../utils/sendSocket'
 
 import s from './styles.scss'
@@ -14,7 +13,7 @@ class Chat extends PureComponent {
   }
 
   get header() {
-    const { online = 0 } = this.props
+    const { online } = this.props
     return (
       <div className={s.chat_header}>
         <span className={s.chat_header_heading}>Онлайн чат</span>
@@ -87,17 +86,6 @@ class Chat extends PureComponent {
       </div>
     )
   }
-}
-
-Chat.propTypes = {
-  messages: PropTypes.array,
-  user: PropTypes.shape({
-    auth: PropTypes.boolean,
-    name: PropTypes.string,
-    avatar: PropTypes.string,
-    balance: PropTypes.number,
-    id: PropTypes.number,
-  }),
 }
 
 const mapStateToProps = ({ lang: { data: lang } }) => ({ lang })

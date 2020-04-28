@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-
 const jackpot = {
   bets: {
     purple: [],
@@ -10,7 +8,6 @@ const jackpot = {
     avatar: '',
     win: 0,
   },
-  timer: { time: 20, start: false },
   odds: {
     pink: 2,
     purple: 2,
@@ -18,6 +15,7 @@ const jackpot = {
   history: [],
   result: 0,
   request: undefined,
+  timer: { time: 0, start: false },
 }
 
 export default function (state = jackpot, action) {
@@ -29,13 +27,9 @@ export default function (state = jackpot, action) {
       }
     }
     case 'JACKPOT_SUCCESS': {
-      const difference = 20 - (dayjs().unix() - action.payload.time)
-      const time = difference <= 0 ? 0 : difference
-
       return {
         ...state,
         bets: { ...state.bets, ...action.payload.bets },
-        ...(action.payload.time && { timer: { time, start: true } }),
         odds: action.payload.odds,
         history: action.payload.history,
         topDay: {
@@ -117,13 +111,7 @@ export default function (state = jackpot, action) {
     case 'TIMER_START': {
       return {
         ...state,
-        timer: { ...state.timer, start: true },
-      }
-    }
-    case 'CHANGE_TIMER': {
-      return {
-        ...state,
-        timer: { ...state.timer, time: action.payload },
+        timer: { time: action.payload, start: true },
       }
     }
     case 'JACKPOT_REOPEN': {

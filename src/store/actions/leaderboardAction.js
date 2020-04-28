@@ -1,4 +1,4 @@
-const getLeaderboard = () => async (dispatch) => {
+const getLeaderboard = () => (dispatch) => {
   dispatch({ type: 'LEADERBOARD_REQUEST' })
 
   try {

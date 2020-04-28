@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import SvgIcon from '../SvgIcon'
 import s from './styles.scss'
@@ -38,13 +37,8 @@ const HistoryList = ({ header, histList, balance, text }) => {
 HistoryList.defaultProps = {
   header: '',
   balance: false,
+  histList: [],
   text: false,
-}
-
-HistoryList.propTypes = {
-  header: PropTypes.string,
-  balance: PropTypes.bool,
-  text: PropTypes.bool,
 }
 
 export default HistoryList

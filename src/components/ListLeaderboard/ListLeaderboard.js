@@ -1,6 +1,5 @@
 import cn from 'classnames'
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import formatFN from '../../utils/formatFN'
 import s from './styles.scss'
@@ -27,11 +26,6 @@ const ListLeaderboard = ({ leaderboard, userId }) => {
       </div>
     </div>
   ))
-}
-
-ListLeaderboard.propTypes = {
-  leaderboard: PropTypes.array,
-  userId: PropTypes.number
 }
 
 export default ListLeaderboard

@@ -1,6 +1,5 @@
 import cn from 'classnames'
 import React from 'react'
-import PropTypes from 'prop-types'
 import SvgIcon from '../SvgIcon'
 import copyToClipboard from '../../utils/copyToClipboard'
 
@@ -30,14 +29,6 @@ MiniBlockInfo.defaultProps = {
   icon: '',
   width: 160,
   copy: false,
-}
-
-MiniBlockInfo.propTypes = {
-  title: PropTypes.string,
-  description: PropTypes.string,
-  icon: PropTypes.string,
-  width: PropTypes.number,
-  copy: PropTypes.bool,
 }
 
 export default MiniBlockInfo
