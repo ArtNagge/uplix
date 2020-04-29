@@ -1,0 +1,61 @@
+@import '../../theme/variables.scss';
+
+.payment_method {
+  width: 300px;
+  height: 60px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: content-box;
+  justify-content: space-between;
+  border: solid 2px transparent;
+  transition: 0.2s ease;
+  background-color: rgba($color: $gray_02, $alpha: 0.5);
+
+  span {
+    font-weight: 500;
+    font-size: 16px;
+    color: $gray_06;
+    text-align: left;
+    transition: 0.2s ease;
+  }
+
+  &_svg {
+    margin-right: 20px;
+  }
+
+  &_info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &_activeDot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: $gray_02;
+    border: solid 1px $gray_06;
+    box-sizing: content-box;
+    transition: 0.2s ease;
+    margin-right: 9px;
+    margin-left: 20px;
+
+    &_active {
+      border: solid 1px $default_white;
+      background-color: $purple_01;
+    }
+  }
+
+  &_active {
+    border: solid 2px $purple_01;
+    background-color: rgba($color: $purple_01, $alpha: 0.5);
+
+    span {
+      color: $default_white;
+    }
+  }
+}

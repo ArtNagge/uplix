@@ -1,41 +1,42 @@
 import cn from 'classnames'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import checkLang from '../../utils/checkLang'
 
-import svgIcons from '../../utils/svgIcons'
 import s from './styles.scss'
 import SvgIcon from '../SvgIcon'
-import { string } from 'prop-types'
 
-const HistoryProfile = ({ icon, classes, date, event }) => {
-  const eventIsNumber = !isNaN(Number(event))
-  const classesEvent = cn(
-    eventIsNumber && s.hist_info_event_number,
-    eventIsNumber && Number(event) < 0 ? s.hist_info_event_gray : eventIsNumber ? s.hist_info_event_purple : '',
-    !eventIsNumber && s.hist_info_event_text
-  )
+const HistoryProfile = ({ event, prize, progress }) => {
+  const { current, purpose } = progress
+  const width = (current * 100) / purpose
+  const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
+
   return (
-    <div className={s.hist}>
-      <div className={s.hist_icon}>
-        <div className={classes}>{svgIcons[icon]}</div>
-      </div>
-      <div className={s.hist_info}>
-        <div className={s.hist_info_container}>
-          <span className={s.hist_info_date}>{date}</span>
-          <span className={classesEvent}>
-            {event}
-            {eventIsNumber && <SvgIcon icon="gem" classes={s.hist_info_event_icon} />}
-          </span>
+    <div className={s.task}>
+      <div className={s.task_main}>
+        <span className={s.task_main_event}>{event}</span>
+        <div className={s.task_main_progress}>
+          <span>{`${current}/${purpose}`}</span>
+          <div className={s.task_main_progress_current} style={{ width: `calc(${width}% - 8px)` }} />
         </div>
+      </div>
+      <div className={s.task_control}>
+        <div className={s.task_control_prize}>
+          <span>
+            {checkLang(lang, 'prize')} {prize}
+          </span>
+          <SvgIcon icon="gem" classes={s.task_control_prize_icon} />
+        </div>
+        <button className={s.task_control_prize_button}>Забрать</button>
       </div>
     </div>
   )
 }
 
 HistoryProfile.defaultProps = {
-  icon: '',
-  classes: '',
-  date: "date: '23.02.20 в 15:19'",
-  event: '',
+  event: 'Сыграть в режим “Классик” 5 раз',
+  prize: 50,
+  progress: { current: 1, purpose: 5 },
 }
 
 export default HistoryProfile

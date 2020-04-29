@@ -26,6 +26,12 @@ export default function (state = jackpot, action) {
         request: 'JACKPOT_REQUEST',
       }
     }
+    case 'DAY_TOP': {
+      return {
+        ...state,
+        topDay: action.payload,
+      }
+    }
     case 'JACKPOT_SUCCESS': {
       return {
         ...state,

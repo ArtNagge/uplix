@@ -41,10 +41,6 @@ const Jackpot = ({ percent, result, total, start, time }) => {
       }, 1000)
     }
 
-    if (time <= 0) {
-      clearInterval(interval)
-    }
-
     return () => clearInterval(interval)
   }, [start, time])
 

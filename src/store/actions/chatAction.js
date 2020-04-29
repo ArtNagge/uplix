@@ -31,4 +31,8 @@ const chat = ({ message, time, user }) => (dispatch) => {
   }
 }
 
-export { initChat, chat }
+const timerInit = (payload) => (dispatch) => {
+  return dispatch({ type: 'CHAT_ONLINE_INIT', payload })
+}
+
+export { initChat, chat, timerInit }
