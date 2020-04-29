@@ -9,6 +9,7 @@ import { getUserInfo, logoutUser, authUser, getBalance } from '../../store/actio
 import { initChat, chat } from '../../store/actions/chatAction'
 import { getJackpot, makeBet } from '../../store/actions/jackpotAction'
 import { getLangResourse, getStorageResourse } from '../../store/actions/langAction'
+import { socketConnect } from '../../store/actions/socket'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import sendSocket from '../../utils/sendSocket'
 
@@ -19,7 +20,6 @@ class App extends PureComponent {
     socketAuth: false,
     subscribes: [],
     connect: 1,
-    online: 0,
   }
 
   ws = new ReconnectingWebSocket('wss://uptest.work:2087/', null, { debug: false, reconnectInterval: 2000 })
@@ -35,6 +35,7 @@ class App extends PureComponent {
       getBalance,
       initChat,
       chat,
+      socketConnect,
     } = this.props
 
     const lang_hash = localStorage.getItem('lang_hash')
@@ -48,13 +49,13 @@ class App extends PureComponent {
 
       this.addSubscribe('online')
 
-      this.setState({ socketAuth: true })
+      socketConnect(this.ws, true)
     }
 
     this.ws.onmessage = (data) => {
       const { data: response } = data
       const info = JSON.parse(response)
-      // console.log(info)
+      console.log(info)
 
       switch (info.seq || info.channel) {
         case 'online': {
@@ -113,10 +114,6 @@ class App extends PureComponent {
     }
   }
 
-  handleConnect = () => {
-    this.setState({ connect: 0 })
-  }
-
   addSubscribe = (val, dell) => {
     const { subscribes } = this.state
     const indexElem = subscribes.findIndex((v) => v === val)
@@ -133,33 +130,16 @@ class App extends PureComponent {
   }
 
   render() {
-    const { socketAuth, connect, online } = this.state
-    const { messages, user, logoutUser } = this.props
+    const { online, messages, user, logoutUser } = this.props
     return (
       <Router>
         <div className={s.content_wrapper}>
           <Sidebar ws={this.ws} user={user} logoutUser={() => logoutUser()} />
           <div className={s.content}>
             <Switch>
-              {routs.map((el, index) => {
-                const { component: Component, exact, path } = el
-                return (
-                  <Route
-                    key={index}
-                    exact={exact}
-                    path={path}
-                    component={() => (
-                      <Component
-                        connect={connect}
-                        handleConnect={this.handleConnect}
-                        wsConnect={socketAuth}
-                        addSubscribe={this.addSubscribe}
-                        ws={this.ws}
-                      />
-                    )}
-                  />
-                )
-              })}
+              {routs.map((el, index) => (
+                <Route key={index} exact={el.exact} path={el.path} component={el.component} />
+              ))}
             </Switch>
           </div>
           <Chat online={online} ws={this.ws} user={user} messages={messages} />
@@ -169,8 +149,8 @@ class App extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ chat: messages, user }) => {
-  return { messages, user }
+const mapStateToProps = ({ chat: { messages, online }, user, socket: { ws } }) => {
+  return { messages, online, user, ws }
 }
 
 export default connect(mapStateToProps, {
@@ -184,4 +164,5 @@ export default connect(mapStateToProps, {
   getBalance,
   initChat,
   chat,
+  socketConnect,
 })(App)

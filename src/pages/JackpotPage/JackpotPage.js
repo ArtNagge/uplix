@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { connect } from 'react-redux'
 import Jackpot from '../../components/Jackpot/Jackpot'
-import { changeTimer } from '../../store/actions/jackpotAction'
+import { connectCounter } from '../../store/actions/socket'
 import React, { PureComponent, createRef } from 'react'
 import sendSocket from '../../utils/sendSocket'
 
@@ -17,11 +17,24 @@ class JackpotPage extends PureComponent {
   }
 
   componentDidMount() {
-    const { ws, wsConnect, connect, handleConnect } = this.props
-    if (wsConnect && connect) {
-      handleConnect()
+    const { ws, connect, countConnect, connectCounter } = this.props
+    if (connect && countConnect) {
+      connectCounter(0)
       sendSocket(ws, 3, { method: 'wheel.get' }, 'wheelGet')
     }
+  }
+
+  componentDidUpdate() {
+    const { ws, connect, countConnect, connectCounter } = this.props
+    if (connect && countConnect) {
+      connectCounter(0)
+      sendSocket(ws, 3, { method: 'wheel.get' }, 'wheelGet')
+    }
+  }
+
+  componentWillUnmount() {
+    const { connectCounter } = this.props
+    connectCounter(1)
   }
 
   handleBet = (evt) => {
@@ -188,7 +201,7 @@ class JackpotPage extends PureComponent {
   }
 
   render() {
-    const { bets, lang, history, timer, result, topDay, changeTimer } = this.props
+    const { bets, lang, history, result, topDay, time, start } = this.props
     const { purple, pink } = bets
 
     const pinkTotal = pink.reduce((a, { bets }) => a + Number(bets), 0).toFixed(1)
@@ -226,7 +239,7 @@ class JackpotPage extends PureComponent {
               </div>
             </div>
           </div>
-          <Jackpot total={total} timer={timer} changeTimer={changeTimer} percent={percent} result={result} />
+          <Jackpot total={total} time={time} start={start} percent={percent} result={result} />
           <div className={s.jackpot_rightBlock}>
             <div className={s.jackpot_rightBlock_top}>
               <div className={cn(s.header_top, s.header_right)}>
@@ -271,20 +284,19 @@ class JackpotPage extends PureComponent {
 }
 
 const mapStateToProps = ({
-  jackpot: { bets, history, topDay, timer, result, odds },
-  user: { user },
-  lang: { data: lang },
-}) => {
-  return {
+  jackpot: {
     bets,
     history,
     topDay,
-    user,
     result,
-    timer,
-    lang,
     odds,
-  }
+    timer: { time, start },
+  },
+  user: { user },
+  lang: { data: lang },
+  socket: { ws, connect, countConnect },
+}) => {
+  return { ws, connect, countConnect, bets, history, topDay, user, result, lang, odds, time, start }
 }
 
-export default connect(mapStateToProps, { changeTimer })(JackpotPage)
+export default connect(mapStateToProps, { connectCounter })(JackpotPage)

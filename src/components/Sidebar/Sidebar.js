@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Link, NavLink } from 'react-router-dom'
 import formatFN from '../../utils/formatFN'
 
@@ -105,16 +104,6 @@ const Sidebar = ({ user, logoutUser, ws }) => {
       </div>
     </div>
   )
-}
-
-Sidebar.propTypes = {
-  user: PropTypes.shape({
-    auth: PropTypes.boolean,
-    name: PropTypes.string,
-    avatar: PropTypes.string,
-    balance: PropTypes.number,
-    id: PropTypes.number,
-  }),
 }
 
 export default Sidebar

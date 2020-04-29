@@ -1,23 +1,24 @@
-const getJackpot = ({ response, status }) => async (dispatch) => {
+const getJackpot = ({ response, status }) => (dispatch) => {
   dispatch({ type: 'JACKPOT_REQUEST' })
 
   if (status === 'success') {
     const {
       data: { bets, odds },
-      time,
       history,
       day_top,
+      time,
     } = response
     const data = {
       type: 'JACKPOT_SUCCESS',
-      payload: { bets, odds, time, history, day_top },
+      payload: { bets, odds, history, day_top },
     }
+    time && dispatch({ type: 'TIMER_START', payload: time })
     return dispatch(data)
   }
   return dispatch({ type: 'JACKPOT_FAIL' })
 }
 
-const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_history, history }) => async (dispatch) => {
+const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_history, history }) => (dispatch) => {
   dispatch({ type: 'BET_REQUEST' })
 
   try {
@@ -26,31 +27,27 @@ const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_histo
         type: 'BET_SUCCESS',
         payload: { bet, odds },
       }
-      dispatch(data)
+      return dispatch(data)
     }
     if (is_spin) {
       const data = {
         type: 'BET_RESULT_SUCCESS',
         payload: spin,
       }
-      dispatch(data)
+      return dispatch(data)
     }
     if (timer_start && time) {
-      dispatch({ type: 'TIMER_START' })
+      return dispatch({ type: 'TIMER_START', payload: time })
     }
     if (reopen) {
-      dispatch({ type: 'JACKPOT_REOPEN' })
+      return dispatch({ type: 'JACKPOT_REOPEN' })
     }
     if (is_history) {
-      dispatch({ type: 'JACKPOT_HISTORY', payload: history })
+      return dispatch({ type: 'JACKPOT_HISTORY', payload: history })
     }
   } catch (error) {
-    dispatch({ type: 'BET_FAIL' })
+    return dispatch({ type: 'BET_FAIL' })
   }
 }
 
-const changeTimer = (time) => (dispatch) => {
-  dispatch({ type: 'CHANGE_TIMER', payload: time })
-}
-
-export { getJackpot, makeBet, changeTimer }
+export { getJackpot, makeBet }

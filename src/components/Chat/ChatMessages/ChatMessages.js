@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react'
-import PropTypes from 'prop-types'
 
 import { AvatarElips } from '../../AvatarElips'
 
@@ -32,7 +31,5 @@ const ChatMessages = ({ messages }) => {
     </div>
   )
 }
-ChatMessages.propTypes = {
-  messages: PropTypes.array,
-}
+
 export default ChatMessages

@@ -1,16 +1,16 @@
+import dayjs from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import checkLang from '../../utils/checkLang'
-import PropTypes from 'prop-types'
-import sendSocket from '../../utils/sendSocket'
 
 import s from './styles.scss'
 import SvgIcon from '../SvgIcon/SvgIcon'
 
-const Jackpot = ({ percent, result, timer, total, changeTimer }) => {
+const Jackpot = ({ percent, result, total, start, time }) => {
   const svgRef = useRef(null)
   const jackpotRef = useRef(null)
   const jackpotBorderRef = useRef(null)
+  const [timeTimer, setTime] = useState(0)
 
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
 
@@ -27,30 +27,26 @@ const Jackpot = ({ percent, result, timer, total, changeTimer }) => {
     circleBorder.style.strokeDashoffset = circumference - 10
 
     progress(percent)
-    console.log(timer)
-    changeTimer(timer.time)
-  }, [timer.start])
-
-  useEffect(() => {
-    changeTimer(timer.time)
-  }, [timer.time])
+  }, [])
 
   // updateTimer
 
   useEffect(() => {
     let interval
-    if (timer.start) {
+    if (start) {
       interval = setInterval(() => {
-        changeTimer(timer.time - 1)
+        const difference = 20 - (dayjs().unix() - time)
+        const count = difference <= 0 ? 0 : difference
+        setTime(count)
       }, 1000)
     }
 
-    if (timer.time <= 0) {
+    if (time <= 0) {
       clearInterval(interval)
     }
 
     return () => clearInterval(interval)
-  }, [timer.start, timer.time])
+  }, [start, time])
 
   useEffect(() => {
     progress(percent)
@@ -78,14 +74,14 @@ const Jackpot = ({ percent, result, timer, total, changeTimer }) => {
 
   const timerBlock = () => {
     const initTimer = 20
-    const currentTimerWidth = 100 - (initTimer - timer.time) * 5
+    const currentTimerWidth = 100 - (initTimer - timeTimer) * 5
 
     return (
       <div className={s.jackpot_game_info_timer}>
         <div className={s.jackpot_game_info_timer_counter}>
           <div className={s.jackpot_game_info_timer_counter_container}>
-            <div className={s.jackpot_game_info_timer_counter_1}>{parseInt(timer.time / 10)}</div>
-            <div className={s.jackpot_game_info_timer_counter_2}>{timer.time % 10}</div>
+            <div className={s.jackpot_game_info_timer_counter_1}>{parseInt(timeTimer / 10)}</div>
+            <div className={s.jackpot_game_info_timer_counter_2}>{timeTimer % 10}</div>
           </div>
           <span>{checkLang(lang, 'time')}</span>
         </div>
@@ -132,13 +128,6 @@ const Jackpot = ({ percent, result, timer, total, changeTimer }) => {
       </svg>
     </div>
   )
-}
-
-Jackpot.propTypes = {
-  percent: PropTypes.number,
-  result: PropTypes.number,
-  timer: PropTypes.any,
-  total: PropTypes.number,
 }
 
 export default Jackpot

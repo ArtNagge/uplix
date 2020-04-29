@@ -1,11 +1,10 @@
 import cn from 'classnames'
 import React from 'react'
-import dayjs from 'dayjs'
-import PropTypes from 'prop-types'
 
 import svgIcons from '../../utils/svgIcons'
 import s from './styles.scss'
 import SvgIcon from '../SvgIcon'
+import { string } from 'prop-types'
 
 const HistoryProfile = ({ icon, classes, date, event }) => {
   const eventIsNumber = !isNaN(Number(event))
@@ -33,17 +32,10 @@ const HistoryProfile = ({ icon, classes, date, event }) => {
 }
 
 HistoryProfile.defaultProps = {
-  prize: 500,
-  full: 75,
-  currentProgress: 30,
-  title: 'Название достижения',
-}
-
-HistoryProfile.propTypes = {
-  prize: PropTypes.number,
-  classes: PropTypes.string,
-  date: PropTypes.any,
-  event: PropTypes.any,
+  icon: '',
+  classes: '',
+  date: "date: '23.02.20 в 15:19'",
+  event: '',
 }
 
 export default HistoryProfile

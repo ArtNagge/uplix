@@ -1,7 +1,5 @@
 import cn from 'classnames'
 import React from 'react'
-import dayjs from 'dayjs'
-import PropTypes from 'prop-types'
 
 import svgIcons from '../../utils/svgIcons'
 import s from './styles.scss'
@@ -37,13 +35,6 @@ HistoryProfile.defaultProps = {
   classes: '',
   date: '23.02.20 в 15:19',
   event: 'event',
-}
-
-HistoryProfile.propTypes = {
-  icon: PropTypes.string,
-  classes: PropTypes.string,
-  date: PropTypes.any,
-  event: PropTypes.any,
 }
 
 export default HistoryProfile

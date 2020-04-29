@@ -36,6 +36,7 @@ const getUserInfo = ({ response, status }, access_token) => (dispatch) => {
       type: 'USER_GET_INFO_SUCCESS',
       payload: { access_token, user: response },
     }
+    dispatch({ type: 'CHAT_ONLINE_INIT', payload: response.online })
     return dispatch(data)
   }
 
