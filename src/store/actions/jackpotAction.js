@@ -18,11 +18,13 @@ const getJackpot = ({ response, status }) => (dispatch) => {
   return dispatch({ type: 'JACKPOT_FAIL' })
 }
 
-const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_history, history }) => (dispatch) => {
+const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_history, history, day_top, who }) => (
+  dispatch
+) => {
   dispatch({ type: 'BET_REQUEST' })
 
   try {
-    if (!is_spin && !reopen && !timer_start && !time && !is_history) {
+    if (!is_spin && !reopen && !timer_start && !time && !is_history && !day_top) {
       const data = {
         type: 'BET_SUCCESS',
         payload: { bet, odds },
@@ -34,6 +36,22 @@ const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_histo
         type: 'BET_RESULT_SUCCESS',
         payload: spin,
       }
+      return dispatch(data)
+    }
+    if (day_top) {
+      const {
+        user: { name, picture },
+        amount,
+      } = who
+      const data = {
+        type: 'DAY_TOP',
+        payload: {
+          name,
+          avatar: picture,
+          win: amount,
+        },
+      }
+
       return dispatch(data)
     }
     if (timer_start && time) {

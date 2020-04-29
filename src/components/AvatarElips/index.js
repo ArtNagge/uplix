@@ -1,1 +1,2 @@
-export { default as AvatarElips } from './AvatarElips'
+import AvatarElips from './AvatarElips'
+export default AvatarElips

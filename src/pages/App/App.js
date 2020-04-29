@@ -6,7 +6,7 @@ import { Sidebar } from '../../components/Sidebar'
 import { Chat } from '../../components/Chat'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { getUserInfo, logoutUser, authUser, getBalance } from '../../store/actions/userAction'
-import { initChat, chat } from '../../store/actions/chatAction'
+import { initChat, chat, timerInit } from '../../store/actions/chatAction'
 import { getJackpot, makeBet } from '../../store/actions/jackpotAction'
 import { getLangResourse, getStorageResourse } from '../../store/actions/langAction'
 import { socketConnect } from '../../store/actions/socket'
@@ -36,6 +36,7 @@ class App extends PureComponent {
       initChat,
       chat,
       socketConnect,
+      timerInit,
     } = this.props
 
     const lang_hash = localStorage.getItem('lang_hash')
@@ -59,32 +60,36 @@ class App extends PureComponent {
 
       switch (info.seq || info.channel) {
         case 'online': {
-          this.setState({ online: info.message })
+          timerInit(info.message)
+          break
         }
         case 'chatHistory': {
           this.addSubscribe('chat')
-          return initChat(info)
+          initChat(info)
+          break
         }
         case 'chat': {
-          return chat(info.message)
+          chat(info.message)
+          break
         }
         case 'wheel': {
-          return makeBet(info.message)
+          makeBet(info.message)
+          break
         }
         case 'authData': {
           authUser(info)
-          return
+          break
         }
         case 'auth': {
           const { response, status } = info
           if (status === 'success') {
             window.open(response.redirect_url, '_parent')
           }
-          return
+          break
         }
         case 'languageSources': {
           getLangResourse(info)
-          return
+          break
         }
         case 'getUser': {
           if (!lang_hash || info.response.lang_hash !== lang_hash) {
@@ -98,17 +103,19 @@ class App extends PureComponent {
             getUserInfo(info, access_token)
             this.addSubscribe('balance')
           }
-          return
+          break
         }
         case 'bet': {
-          return
+          break
         }
         case 'balance': {
-          return getBalance(info.message)
+          getBalance(info.message)
+          break
         }
         case 'wheelGet': {
           this.addSubscribe('wheel')
-          return getJackpot(info)
+          getJackpot(info)
+          break
         }
       }
     }
@@ -154,15 +161,16 @@ const mapStateToProps = ({ chat: { messages, online }, user, socket: { ws } }) =
 }
 
 export default connect(mapStateToProps, {
-  getJackpot,
-  logoutUser,
-  getStorageResourse,
-  getLangResourse,
-  getUserInfo,
-  authUser,
-  makeBet,
-  getBalance,
-  initChat,
   chat,
+  makeBet,
+  initChat,
+  authUser,
+  timerInit,
+  getBalance,
+  logoutUser,
+  getJackpot,
+  getUserInfo,
   socketConnect,
+  getLangResourse,
+  getStorageResourse,
 })(App)

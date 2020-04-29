@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 
-import { AvatarElips } from '../../AvatarElips'
+import AvatarElips from '../../AvatarElips'
 
 import s from '../styles.scss'
 
