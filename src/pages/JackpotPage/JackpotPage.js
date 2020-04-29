@@ -105,17 +105,19 @@ class JackpotPage extends PureComponent {
               <div className={s.jackpot_bet_amount}>{checkLang(lang, 'game.bets')}</div>
             </div>
             <div className={s.jackpot_bet_container_content}>
-              {pink.map(({ user, bets }, index) => (
-                <div className={s.jackpot_bet_container_bet} key={index}>
-                  <div className={s.jackpot_bet_name}>
-                    <div className={s.jackpot_bet_name_img}>
-                      <img src={user.picture} alt="" />
+              {pink
+                .sort((a, b) => b.bets - a.bets)
+                .map(({ user, bets }, index) => (
+                  <div className={s.jackpot_bet_container_bet} key={index}>
+                    <div className={s.jackpot_bet_name}>
+                      <div className={s.jackpot_bet_name_img}>
+                        <img src={user.picture} alt="" />
+                      </div>
+                      {user.name}
                     </div>
-                    {user.name}
+                    <div className={s.jackpot_bet_amount}>{bets}</div>
                   </div>
-                  <div className={s.jackpot_bet_amount}>{bets}</div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
@@ -130,17 +132,19 @@ class JackpotPage extends PureComponent {
               <div className={s.jackpot_bet_amount}>{checkLang(lang, 'game.bets')}</div>
             </div>
             <div className={s.jackpot_bet_container_content}>
-              {purple.map(({ user, bets }, index) => (
-                <div className={s.jackpot_bet_container_bet} key={index}>
-                  <div className={s.jackpot_bet_name}>
-                    <div className={s.jackpot_bet_name_img}>
-                      <img src={user.picture} alt="" />
+              {purple
+                .sort((a, b) => b.bets - a.bets)
+                .map(({ user, bets }, index) => (
+                  <div className={s.jackpot_bet_container_bet} key={index}>
+                    <div className={s.jackpot_bet_name}>
+                      <div className={s.jackpot_bet_name_img}>
+                        <img src={user.picture} alt="" />
+                      </div>
+                      {user.name}
                     </div>
-                    {user.name}
+                    <div className={s.jackpot_bet_amount}>{bets}</div>
                   </div>
-                  <div className={s.jackpot_bet_amount}>{bets}</div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
@@ -204,8 +208,8 @@ class JackpotPage extends PureComponent {
     const { bets, lang, history, result, topDay, time, start } = this.props
     const { purple, pink } = bets
 
-    const pinkTotal = pink.reduce((a, { bets }) => a + Number(bets), 0).toFixed(1)
-    const purpleTotal = purple.reduce((a, { bets }) => a + Number(bets), 0).toFixed(1)
+    const pinkTotal = Math.round(pink.reduce((a, { bets }) => a + Number(bets), 0))
+    const purpleTotal = Math.round(purple.reduce((a, { bets }) => a + Number(bets), 0).toFixed(1))
     const total = Number(pinkTotal) + Number(purpleTotal)
     const percent = (Math.floor(purpleTotal) / (Math.floor(purpleTotal) + Math.floor(pinkTotal))) * 100 || 0
 
