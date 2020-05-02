@@ -58,4 +58,10 @@
       color: $default_white;
     }
   }
+
+  @include breakpoints('1028') {
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
 }

@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  box-sizing: border-box;
 
   h3 {
     font-size: 20px;
@@ -58,11 +59,21 @@
     cursor: pointer;
     color: $gray_06;
     flex-shrink: 0;
-    border-bottom: solid 2px transparent;
+    border-bottom: solid 2px $gray_06;
 
     &_active {
       color: $purple_01;
       border-bottom: solid 2px $purple_01;
+    }
+  }
+
+  @include breakpoints('1028') {
+    padding: 130px 10px 0 10px;
+  }
+
+  @include breakpoints('480') {
+    &_tabs {
+      overflow: auto;
     }
   }
 }

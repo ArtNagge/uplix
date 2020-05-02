@@ -173,4 +173,77 @@
       box-shadow: 0px 0px 120px 5px $gray_06_01;
     }
   }
+
+  @include breakpoints('1028') {
+    &_game {
+      width: 310px;
+      height: 310px;
+      margin-top: 40px;
+
+      &_info {
+        &_bank {
+          font-size: 12px;
+
+          &_total {
+            font-size: 20px;
+
+            &_icon {
+              width: 14px;
+              height: 22px;
+              margin-left: 5px;
+            }
+          }
+        }
+
+        &_timer {
+          margin: 40px 0 15px 0;
+
+          &_bar {
+            width: 121px;
+            height: 9px;
+
+            &_progress {
+              height: 5px;
+            }
+          }
+
+          &_counter {
+            width: 100px;
+            margin-bottom: 5px;
+
+            > span {
+              font-size: 14px;
+            }
+
+            &_container {
+              height: 70px;
+            }
+
+            &_1,
+            &_2 {
+              width: 45px;
+              font-size: 45px;
+              border-radius: 15px;
+            }
+          }
+        }
+
+        &::before {
+          top: 40px;
+          width: 221px;
+          height: 87px;
+        }
+      }
+
+      &_arrow {
+        width: 35px;
+        height: 24px;
+      }
+
+      &::before {
+        width: 310px;
+        height: 310px;
+      }
+    }
+  }
 }

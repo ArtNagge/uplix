@@ -5,21 +5,27 @@ import { routs } from '../../utils/config'
 import { Sidebar } from '../../components/Sidebar'
 import { Chat } from '../../components/Chat'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { getUserInfo, logoutUser, authUser, getBalance } from '../../store/actions/userAction'
+import { getUserInfo, logoutUser, authUser, getBalance, allHistory, allTasks } from '../../store/actions/userAction'
 import { initChat, chat, timerInit } from '../../store/actions/chatAction'
-import { getJackpot, makeBet } from '../../store/actions/jackpotAction'
+import { getJackpot, makeBet, clientServerDiff } from '../../store/actions/jackpotAction'
 import { getLangResourse, getStorageResourse } from '../../store/actions/langAction'
 import { socketConnect } from '../../store/actions/socket'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import sendSocket from '../../utils/sendSocket'
+import Media from 'react-media'
 
 import s from './styles.scss'
+import dayjs from 'dayjs'
+import HeaderMobile from '../../components/HeaderMobile'
 
 class App extends PureComponent {
   state = {
     socketAuth: false,
     subscribes: [],
     connect: 1,
+    tPing: 0,
+    activeChat: false,
+    activeMenu: false,
   }
 
   ws = new ReconnectingWebSocket('wss://uptest.work:2087/', null, { debug: false, reconnectInterval: 2000 })
@@ -37,6 +43,9 @@ class App extends PureComponent {
       chat,
       socketConnect,
       timerInit,
+      clientServerDiff,
+      allHistory,
+      allTasks,
     } = this.props
 
     const lang_hash = localStorage.getItem('lang_hash')
@@ -45,6 +54,10 @@ class App extends PureComponent {
 
     this.ws.onopen = () => {
       sendSocket(this.ws, 1, access_token || 1, 'getUser')
+      this.setState(
+        { tPing: dayjs().valueOf() },
+        sendSocket(this.ws, 3, { method: 'utils.getServerTime' }, 'getServerTime')
+      )
       sendSocket(this.ws, 3, { method: 'chat.history' }, 'chatHistory')
       sendSocket(this.ws, 2, this.state.subscribes)
 
@@ -59,6 +72,27 @@ class App extends PureComponent {
       console.log(info)
 
       switch (info.seq || info.channel) {
+        case 'tasksPickUp': {
+          // TODO: pick up
+          break
+        }
+        case 'tasksGet': {
+          allTasks(info.response)
+          break
+        }
+        case 'paymentsHistory': {
+          allHistory(info.response)
+          break
+        }
+        case 'getServerTime': {
+          const { tPing } = this.state
+          const tServ = dayjs(info.response * 1000).valueOf()
+          const tPong = dayjs().valueOf()
+          const tPP = tPing - tPong
+          const tDiff = tServ - tPong - tPP
+          clientServerDiff(tDiff)
+          break
+        }
         case 'online': {
           timerInit(info.message)
           break
@@ -136,20 +170,52 @@ class App extends PureComponent {
     }
   }
 
+  handleInvisible = (evt) => {
+    const {
+      dataset: { value },
+    } = evt.currentTarget
+
+    this.setState((state) => ({ ...state, activeChat: false, activeMenu: false, [value]: !state[value] }))
+  }
+
+  closeMenu = () => {
+    this.setState({ activeMenu: false })
+  }
+
   render() {
+    const { activeMenu, activeChat } = this.state
     const { online, messages, user, logoutUser } = this.props
+
     return (
       <Router>
         <div className={s.content_wrapper}>
-          <Sidebar ws={this.ws} user={user} logoutUser={() => logoutUser()} />
+          <Sidebar
+            onClick={this.closeMenu}
+            activeMenu={activeMenu}
+            ws={this.ws}
+            user={user}
+            logoutUser={() => logoutUser()}
+          />
           <div className={s.content}>
+            <Media query={{ maxWidth: 1028 }}>
+              {(match) =>
+                match ? (
+                  <HeaderMobile
+                    handleInvisible={this.handleInvisible}
+                    activeMenu={activeMenu}
+                    activeChat={activeChat}
+                    logoutUser={() => logoutUser()}
+                  />
+                ) : null
+              }
+            </Media>
             <Switch>
               {routs.map((el, index) => (
                 <Route key={index} exact={el.exact} path={el.path} component={el.component} />
               ))}
             </Switch>
           </div>
-          <Chat online={online} ws={this.ws} user={user} messages={messages} />
+          <Chat activeChat={activeChat} online={online} ws={this.ws} user={user} messages={messages} />
         </div>
       </Router>
     )
@@ -173,4 +239,7 @@ export default connect(mapStateToProps, {
   socketConnect,
   getLangResourse,
   getStorageResourse,
+  clientServerDiff,
+  allHistory,
+  allTasks,
 })(App)

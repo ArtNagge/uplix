@@ -16,6 +16,7 @@ const jackpot = {
   result: 0,
   request: undefined,
   timer: { time: 0, start: false },
+  diff: 0,
 }
 
 export default function (state = jackpot, action) {
@@ -30,6 +31,12 @@ export default function (state = jackpot, action) {
       return {
         ...state,
         topDay: action.payload,
+      }
+    }
+    case 'SERVER_CLIENT_DIFF': {
+      return {
+        ...state,
+        diff: action.payload,
       }
     }
     case 'JACKPOT_SUCCESS': {

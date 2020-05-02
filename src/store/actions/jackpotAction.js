@@ -18,6 +18,14 @@ const getJackpot = ({ response, status }) => (dispatch) => {
   return dispatch({ type: 'JACKPOT_FAIL' })
 }
 
+const clientServerDiff = (payload) => (dispatch) => {
+  const data = {
+    type: 'SERVER_CLIENT_DIFF',
+    payload,
+  }
+  return dispatch(data)
+}
+
 const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_history, history, day_top, who }) => (
   dispatch
 ) => {
@@ -68,4 +76,4 @@ const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_histo
   }
 }
 
-export { getJackpot, makeBet }
+export { getJackpot, makeBet, clientServerDiff }

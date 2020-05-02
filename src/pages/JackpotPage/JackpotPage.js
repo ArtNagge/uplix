@@ -4,6 +4,7 @@ import Jackpot from '../../components/Jackpot/Jackpot'
 import { connectCounter } from '../../store/actions/socket'
 import React, { PureComponent, createRef } from 'react'
 import sendSocket from '../../utils/sendSocket'
+import Media from 'react-media'
 
 import s from './styles.scss'
 import SvgIcon from '../../components/SvgIcon'
@@ -216,69 +217,143 @@ class JackpotPage extends PureComponent {
     return (
       <>
         <div className={s.jackpot_wrapper}>
-          <div className={s.jackpot_leftBlock}>
-            <div className={s.jackpot_leftBlock_top}>
-              <div className={cn(s.header_top, s.header_left)}>
-                <span>{checkLang(lang, 'history')}</span>
-              </div>
-              <div className={s.content}>
-                {history.map((h, index) => (
-                  <div key={index} className={s[h]} />
-                ))}
-              </div>
-            </div>
-            <div className={s.jackpot_leftBlock_bottom}>
-              <div className={cn(s.header_bottom, s.header_left, s.header_pink)}>
-                <span>{checkLang(lang, 'game.total')}</span>
-              </div>
-              <div className={s.content}>
-                <div className={s.content_users}>
-                  <SvgIcon classes={s.content_users_icon} icon="user" />
-                  {pink.length}
-                </div>
-                <div className={s.content_gems}>
-                  <SvgIcon classes={s.content_gems_icon} icon="gem" />
-                  {pinkTotal}
-                </div>
-              </div>
-            </div>
-          </div>
-          <Jackpot total={total} time={time} start={start} percent={percent} result={result} />
-          <div className={s.jackpot_rightBlock}>
-            <div className={s.jackpot_rightBlock_top}>
-              <div className={cn(s.header_top, s.header_right)}>
-                <span>{checkLang(lang, 'day.top')}</span>
-              </div>
-              <div className={s.content}>
-                <div className={s.jackpot_top_avatar}>
-                  <div className={s.jackpot_top_avatarElips}>
-                    <img src={topDay.avatar} alt="" />
+          <Media query={{ maxWidth: 1028 }}>
+            {(matches) =>
+              matches ? (
+                <>
+                  <div className={s.jackpot_leftBlock}>
+                    <div className={s.jackpot_leftBlock_top}>
+                      <div className={cn(s.header_top, s.header_left)}>
+                        <span>{checkLang(lang, 'history')}</span>
+                      </div>
+                      <div className={s.content}>
+                        {history.map((h, index) => (
+                          <div key={index} className={s[h]} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className={s.jackpot_rightBlock_top}>
+                      <div className={cn(s.header_top, s.header_right)}>
+                        <span>{checkLang(lang, 'day.top')}</span>
+                      </div>
+                      <div className={s.content}>
+                        <div className={s.jackpot_top_avatar}>
+                          <div className={s.jackpot_top_avatarElips}>
+                            <img src={topDay.avatar} alt="" />
+                          </div>
+                        </div>
+                        <div className={s.jackpot_top_info}>
+                          <span className={s.jackpot_top_info_name}>{topDay.name}</span>
+                          <div className={s.jackpot_top_info_win}>
+                            {topDay.win} <SvgIcon classes={s.jackpot_top_info_win_icon} icon="gem" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className={s.jackpot_top_info}>
-                  <span className={s.jackpot_top_info_name}>{topDay.name}</span>
-                  <div className={s.jackpot_top_info_win}>
-                    {topDay.win} <SvgIcon classes={s.jackpot_top_info_win_icon} icon="gem" />
+                  <div className={s.jackpot_rightBlock}>
+                    <div className={s.jackpot_rightBlock_bottom}>
+                      <div className={cn(s.header_bottom, s.header_right, s.header_purple)}>
+                        <span>{checkLang(lang, 'game.total')}</span>
+                      </div>
+                      <div className={s.content}>
+                        <div className={s.content_users}>
+                          <SvgIcon icon="user" classes={s.content_users_icon} />
+                          {purple.length}
+                        </div>
+                        <div className={s.content_gems}>
+                          <SvgIcon classes={s.content_gems_icon} icon="gem" />
+                          {purpleTotal}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={s.jackpot_leftBlock_bottom}>
+                      <div className={cn(s.header_bottom, s.header_left, s.header_pink)}>
+                        <span>{checkLang(lang, 'game.total')}</span>
+                      </div>
+                      <div className={s.content}>
+                        <div className={s.content_users}>
+                          <SvgIcon classes={s.content_users_icon} icon="user" />
+                          {pink.length}
+                        </div>
+                        <div className={s.content_gems}>
+                          <SvgIcon classes={s.content_gems_icon} icon="gem" />
+                          {pinkTotal}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className={s.jackpot_rightBlock_bottom}>
-              <div className={cn(s.header_bottom, s.header_right, s.header_purple)}>
-                <span>{checkLang(lang, 'game.total')}</span>
-              </div>
-              <div className={s.content}>
-                <div className={s.content_users}>
-                  <SvgIcon icon="user" classes={s.content_users_icon} />
-                  {purple.length}
-                </div>
-                <div className={s.content_gems}>
-                  <SvgIcon classes={s.content_gems_icon} icon="gem" />
-                  {purpleTotal}
-                </div>
-              </div>
-            </div>
-          </div>
+                  <Jackpot total={total} time={time} start={start} percent={percent} result={result} />
+                </>
+              ) : (
+                <>
+                  <div className={s.jackpot_leftBlock}>
+                    <div className={s.jackpot_leftBlock_top}>
+                      <div className={cn(s.header_top, s.header_left)}>
+                        <span>{checkLang(lang, 'history')}</span>
+                      </div>
+                      <div className={s.content}>
+                        {history.map((h, index) => (
+                          <div key={index} className={s[h]} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className={s.jackpot_leftBlock_bottom}>
+                      <div className={cn(s.header_bottom, s.header_left, s.header_pink)}>
+                        <span>{checkLang(lang, 'game.total')}</span>
+                      </div>
+                      <div className={s.content}>
+                        <div className={s.content_users}>
+                          <SvgIcon classes={s.content_users_icon} icon="user" />
+                          {pink.length}
+                        </div>
+                        <div className={s.content_gems}>
+                          <SvgIcon classes={s.content_gems_icon} icon="gem" />
+                          {pinkTotal}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Jackpot total={total} time={time} start={start} percent={percent} result={result} />
+                  <div className={s.jackpot_rightBlock}>
+                    <div className={s.jackpot_rightBlock_top}>
+                      <div className={cn(s.header_top, s.header_right)}>
+                        <span>{checkLang(lang, 'day.top')}</span>
+                      </div>
+                      <div className={s.content}>
+                        <div className={s.jackpot_top_avatar}>
+                          <div className={s.jackpot_top_avatarElips}>
+                            <img src={topDay.avatar} alt="" />
+                          </div>
+                        </div>
+                        <div className={s.jackpot_top_info}>
+                          <span className={s.jackpot_top_info_name}>{topDay.name}</span>
+                          <div className={s.jackpot_top_info_win}>
+                            {topDay.win} <SvgIcon classes={s.jackpot_top_info_win_icon} icon="gem" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={s.jackpot_rightBlock_bottom}>
+                      <div className={cn(s.header_bottom, s.header_right, s.header_purple)}>
+                        <span>{checkLang(lang, 'game.total')}</span>
+                      </div>
+                      <div className={s.content}>
+                        <div className={s.content_users}>
+                          <SvgIcon icon="user" classes={s.content_users_icon} />
+                          {purple.length}
+                        </div>
+                        <div className={s.content_gems}>
+                          <SvgIcon classes={s.content_gems_icon} icon="gem" />
+                          {purpleTotal}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )
+            }
+          </Media>
         </div>
         {this.control}
         {this.betsList}

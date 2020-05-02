@@ -65,5 +65,23 @@
         }
       }
     }
+
+    @include breakpoints('1028') {
+      padding-top: 130px;
+    }
+
+    @include breakpoints('768') {
+      &_item {
+        &_description {
+          font-size: 14px;
+        }
+
+        &_title {
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+    }
   }
 }

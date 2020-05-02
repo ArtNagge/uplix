@@ -84,4 +84,8 @@
       left: 10px;
     }
   }
+
+  @include breakpoints('1028') {
+    margin-right: 0;
+  }
 }

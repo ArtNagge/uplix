@@ -12,6 +12,7 @@ $gray_08: #252528;
 $gray_09: #323232;
 $gray_10: #2a2a2a;
 $gray_11: #4e4e4e;
+$gray_12: #2e2e2e;
 $gray_06_01: rgba($gray_06, 0.1);
 $gray_07_05: rgba($gray_07, 0.5);
 
@@ -23,3 +24,32 @@ $purple_01_hover: #555dab;
 $purple_02_hover: #9190c2;
 $purple_01_01: rgba($purple_01, 0.1);
 $purple_02_01: rgba($purple_02, 0.1);
+
+@mixin breakpoints($point) {
+  @if $point == '1280' {
+    @media (min-width: 1280px) {
+      @content;
+    }
+  }
+  @if $point == '1200' {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  }
+  @if $point == '1028' {
+    @media (max-width: 1028px) {
+      @content;
+    }
+  }
+  @if $point == '768' {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+
+  @if $point == '480' {
+    @media (max-width: 480px) {
+      @content;
+    }
+  }
+}

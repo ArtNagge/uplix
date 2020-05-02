@@ -115,4 +115,29 @@
       }
     }
   }
+
+  @include breakpoints('768') {
+    &_content {
+      &_user {
+        &_history_games {
+          &_container {
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+          }
+        }
+
+        &_main {
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+
+          &::before,
+          &::after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
 }

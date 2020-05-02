@@ -9,14 +9,12 @@ const user = {
     balance: 0,
   },
   access_token: undefined,
+  history: [],
+  tasks: {},
 }
 
 export default function (state = user, action) {
   switch (action.type) {
-    case 'USER_BALANCE_REQUEST':
-    case 'USER_BALANCE_FAIL': {
-      return state
-    }
     case 'USER_BALANCE_SUCCESS': {
       return {
         ...state,
@@ -26,16 +24,11 @@ export default function (state = user, action) {
         },
       }
     }
-    // USER_BET
-    case 'USER_BET':
+
+    case 'USER_BET': {
       const { bet } = action.payload
       const { balance } = state
       return bet <= balance ? { ...state, balance: balance - bet } : { ...state }
-
-    // USER_GET
-    case 'USER_GET_INFO_REQUEST':
-    case 'USER_GET_INFO_FAIL': {
-      return state
     }
 
     case 'USER_GET_INFO_SUCCESS': {
@@ -48,12 +41,6 @@ export default function (state = user, action) {
         },
         access_token,
       }
-    }
-
-    // USER_AUTH
-    case 'USER_AUTH_FAIL':
-    case 'USER_AUTH_REQUEST': {
-      return state
     }
 
     case 'USER_AUTH_SUCCESS': {
@@ -70,10 +57,23 @@ export default function (state = user, action) {
       }
     }
 
-    // USER_LOGOUT
     case 'USER_LOGOUT': {
       localStorage.removeItem('access_token')
       return user
+    }
+
+    case 'USER_ALL_HISTORY': {
+      return {
+        ...state,
+        history: action.payload,
+      }
+    }
+
+    case 'USER_ALL_TASKS': {
+      return {
+        ...state,
+        tasks: action.payload,
+      }
     }
 
     default:

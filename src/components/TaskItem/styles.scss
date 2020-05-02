@@ -86,7 +86,18 @@
         font-weight: 500;
         color: $gray_02;
         border: none;
+        cursor: default;
+        user-select: none;
+        pointer-events: none;
         margin-top: 7px;
+
+        &_active {
+          color: $default_white;
+          background-color: $purple_01;
+          cursor: pointer;
+          user-select: auto;
+          pointer-events: auto;
+        }
       }
 
       span {
@@ -103,6 +114,36 @@
 
       svg {
         margin-left: 5px;
+      }
+    }
+  }
+
+  @include breakpoints('768') {
+    width: 310px;
+    height: auto;
+    padding: 30px 20px;
+    flex-direction: column;
+
+    &_control {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 20px;
+      align-items: flex-start;
+
+      &_prize {
+        &_button {
+          width: 100%;
+          height: 40px;
+          margin-top: 10px;
+        }
+      }
+    }
+
+    &_main {
+      width: 100%;
+      &_event {
+        font-size: 14px;
+        margin-bottom: 15px;
       }
     }
   }

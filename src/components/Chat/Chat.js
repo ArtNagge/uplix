@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import sendSocket from '../../utils/sendSocket'
@@ -76,10 +77,10 @@ class Chat extends PureComponent {
   }
 
   render() {
-    const { messages } = this.props
+    const { messages, activeChat } = this.props
 
     return (
-      <div className={s.chat}>
+      <div className={cn(s.chat, activeChat && s.chat_active)}>
         {this.header}
         <ChatMessages messages={messages} />
         {this.chatForm}

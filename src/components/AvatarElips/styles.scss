@@ -9,6 +9,10 @@
   justify-content: center;
   flex-shrink: 0;
 
+  &_shadownone {
+    box-shadow: none !important;
+  }
+
   &_elips {
     overflow: hidden;
     border-radius: 50%;

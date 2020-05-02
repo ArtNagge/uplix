@@ -11,10 +11,10 @@ class AuthPage extends PureComponent {
       const url = new URL(window.location.href)
       const requestCode = url.search.split('=')[1]
       const auth_data = { code: requestCode }
-      sendSocket(ws, 3, { method: 'auth.init', parameters: { social: 'vkontakte', auth_data } }, 'authData')
+      sendSocket(ws, 3, { method: 'auth.init', parameters: { social: 'vkontakte', auth_data, dev: 1 } }, 'authData')
     }
 
-    return auth ? <Redirect to="/" /> : <h1>Auth</h1>
+    return <h1>Auth</h1> //auth ? <Redirect to="/" /> :
   }
 }
 

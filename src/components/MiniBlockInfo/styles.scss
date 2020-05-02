@@ -50,4 +50,12 @@
       }
     }
   }
+
+  @include breakpoints('768') {
+    width: 310px !important;
+
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
 }

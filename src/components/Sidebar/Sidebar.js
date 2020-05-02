@@ -1,21 +1,23 @@
+import cn from 'classnames'
 import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import formatFN from '../../utils/formatFN'
-
-import s from './styles.scss'
 import { useSelector } from 'react-redux'
-import SvgIcon from '../SvgIcon/SvgIcon'
-import bag from './img/bag.png'
-import AvatarElips from '../AvatarElips/AvatarElips'
-import checkLang from '../../utils/checkLang'
-import clearMethod from '../../utils/clearMethod'
-import sendSocket from '../../utils/sendSocket'
+import Media from 'react-media'
+import { Link, NavLink } from 'react-router-dom'
 
-const Sidebar = ({ user, logoutUser, ws }) => {
+import bag from './img/bag.png'
+import SvgIcon from '../SvgIcon/SvgIcon'
+import formatFN from '../../utils/formatFN'
+import checkLang from '../../utils/checkLang'
+import sendSocket from '../../utils/sendSocket'
+import clearMethod from '../../utils/clearMethod'
+import AvatarElips from '../AvatarElips/AvatarElips'
+import s from './styles.scss'
+
+const Sidebar = ({ user, logoutUser, ws, activeMenu, onClick }) => {
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
 
   const clickAuth = async () =>
-    await sendSocket(ws, 3, { method: 'auth.getAuthUri', parameters: { social: 'vkontakte' } }, 'auth')
+    await sendSocket(ws, 3, { method: 'auth.getAuthUri', parameters: { social: 'vkontakte', dev: 1 } }, 'auth')
 
   const userPanel = () => {
     const { auth, name, balance, picture } = user.user
@@ -62,24 +64,50 @@ const Sidebar = ({ user, logoutUser, ws }) => {
   }
 
   return (
-    <div className={s.sidebar}>
-      <header className={s.sidebar_header}>
-        <Link to="/">
-          <SvgIcon icon="logo" classes={s.sidebar_header_icon} />
-        </Link>
-      </header>
-      <section className={s.sidebar_user}>{userPanel()}</section>
+    <div className={cn(s.sidebar, activeMenu && s.sidebar_active)}>
+      <Media query={{ maxWidth: 1028 }}>
+        {(match) =>
+          match ? null : (
+            <>
+              <header className={s.sidebar_header}>
+                <Link to="/">
+                  <SvgIcon icon="logo" classes={s.sidebar_header_icon} />
+                </Link>
+              </header>
+              <section className={s.sidebar_user}>{userPanel()}</section>
+            </>
+          )
+        }
+      </Media>
       <div className={s.sidebar_scroll}>
         <nav className={s.sidebar_menu}>
-          <NavLink className={s.sidebar_menu_link} activeClassName={s.sidebar_menu_link_active} to="/" exact>
+          <NavLink
+            onClick={onClick}
+            className={s.sidebar_menu_link}
+            activeClassName={s.sidebar_menu_link_active}
+            to="/"
+            exact
+          >
             <SvgIcon classes={s.sidebar_menu_icon} icon="jackpot" />
             {checkLang(lang, 'game.jackpot')}
           </NavLink>
-          <NavLink className={s.sidebar_menu_link} activeClassName={s.sidebar_menu_link_active} to="/leaderboard" exact>
+          <NavLink
+            onClick={onClick}
+            className={s.sidebar_menu_link}
+            activeClassName={s.sidebar_menu_link_active}
+            to="/leaderboard"
+            exact
+          >
             <SvgIcon classes={s.sidebar_menu_icon} icon="rating" />
             {checkLang(lang, 'leaders')}
           </NavLink>
-          <NavLink className={s.sidebar_menu_link} activeClassName={s.sidebar_menu_link_active} to="/faq" exact>
+          <NavLink
+            onClick={onClick}
+            className={s.sidebar_menu_link}
+            activeClassName={s.sidebar_menu_link_active}
+            to="/faq"
+            exact
+          >
             <SvgIcon classes={s.sidebar_menu_icon} icon="faq" />
             {checkLang(lang, 'faq')}
           </NavLink>
@@ -89,15 +117,15 @@ const Sidebar = ({ user, logoutUser, ws }) => {
             <h4 dangerouslySetInnerHTML={{ __html: clearMethod(checkLang(lang, 'menu.bonus')) }} />
             <img src={bag} alt="" />
           </div>
-          <a className={s.sidebar_lottery_link} href="/" target="_blank" rel="noopener noreferrer">
+          <a onClick={onClick} className={s.sidebar_lottery_link} href="/" target="_blank" rel="noopener noreferrer">
             {checkLang(lang, 'menu.bonus.button')}
           </a>
         </div>
         <nav className={s.sidebar_footer}>
-          <a href="/" target="_blank" rel="noopener noreferrer">
+          <a onClick={onClick} href="/" target="_blank" rel="noopener noreferrer">
             {checkLang(lang, 'rules')}
           </a>
-          <a href="/" target="_blank" rel="noopener noreferrer">
+          <a onClick={onClick} href="/" target="_blank" rel="noopener noreferrer">
             {checkLang(lang, 'terms')}
           </a>
         </nav>

@@ -308,14 +308,14 @@
           justify-content: space-between;
 
           &_icon {
-            width: 15px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
           }
 
           button {
             background-color: transparent;
-            width: 15px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -329,6 +329,27 @@
           }
         }
       }
+    }
+  }
+
+  @include breakpoints('1028') {
+    width: 100%;
+    height: calc(100% - 60px);
+    position: fixed;
+    z-index: 100;
+    top: 60px;
+    left: auto;
+    right: 100%;
+    transition: 0.5s ease;
+
+    &_menu {
+      &_link {
+        margin-bottom: 25px;
+      }
+    }
+
+    &_active {
+      right: 0;
     }
   }
 }

@@ -14,6 +14,10 @@
   overflow: auto;
   overflow-x: hidden;
 
+  @include breakpoints('1028') {
+    margin: 0 auto;
+  }
+
   & > * {
     z-index: 1;
     position: relative;
@@ -34,5 +38,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
+    overflow-x: hidden;
+    position: relative;
   }
 }

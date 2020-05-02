@@ -7,6 +7,30 @@ const userBet = (bet) => (dispatch) => {
   return dispatch(data)
 }
 
+const allHistory = (payload) => (dispatch) => {
+  try {
+    const data = {
+      type: 'USER_ALL_HISTORY',
+      payload,
+    }
+    dispatch(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const allTasks = (payload) => (dispatch) => {
+  try {
+    const data = {
+      type: 'USER_ALL_TASKS',
+      payload,
+    }
+    dispatch(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const authUser = ({ response, status }) => (dispatch) => {
   dispatch({ type: 'USER_AUTH_REQUEST' })
 
@@ -57,4 +81,4 @@ const getBalance = (payload) => (dispatch) => {
   }
 }
 
-export { userBet, authUser, getUserInfo, logoutUser, getBalance }
+export { userBet, authUser, getUserInfo, logoutUser, getBalance, allHistory, allTasks }

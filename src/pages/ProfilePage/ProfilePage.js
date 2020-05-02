@@ -1,17 +1,41 @@
 import cn from 'classnames'
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Payments from '../../components/Payments'
 import Tasks from '../../components/Tasks'
 import Profile from '../../components/Profile'
 import checkLang from '../../utils/checkLang'
+import sendSocket from '../../utils/sendSocket'
+import { connectCounter } from '../../store/actions/socket'
 
 import s from './styles.scss'
 
 const ProfilePage = () => {
-  const [active, setActive] = useState('payments')
-  const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
+  const dispatch = useDispatch()
+  const [active, setActive] = useState('profile')
+  const { lang, ws, connect, countConnect } = useSelector(
+    ({ lang: { data: lang }, socket: { ws, connect, countConnect } }) => ({
+      lang,
+      ws,
+      connect,
+      countConnect,
+    })
+  )
+
+  useEffect(() => {
+    if (connect && countConnect) {
+      dispatch(connectCounter(0))
+      sendSocket(ws, 3, { method: 'payments.history', parameters: { action: '*' } }, 'paymentsHistory')
+      sendSocket(ws, 3, { method: 'tasks.get' }, 'tasksGet')
+    }
+  }, [connect, countConnect])
+
+  useEffect(() => {
+    return () => {
+      dispatch(connectCounter(1))
+    }
+  }, [])
 
   const tabs = [
     {

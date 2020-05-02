@@ -78,4 +78,19 @@
       }
     }
   }
+
+  @include breakpoints('768') {
+    &_content {
+      &_user {
+        &_tasks {
+          &_info {
+            &::before,
+            &::after {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
 }

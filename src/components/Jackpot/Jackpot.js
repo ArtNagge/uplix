@@ -2,9 +2,10 @@ import dayjs from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import checkLang from '../../utils/checkLang'
+import SvgIcon from '../SvgIcon/SvgIcon'
+import Media from 'react-media'
 
 import s from './styles.scss'
-import SvgIcon from '../SvgIcon/SvgIcon'
 
 const Jackpot = ({ percent, result, total, start, time }) => {
   const svgRef = useRef(null)
@@ -12,7 +13,7 @@ const Jackpot = ({ percent, result, total, start, time }) => {
   const jackpotBorderRef = useRef(null)
   const [timeTimer, setTime] = useState(0)
 
-  const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
+  const { lang, diff } = useSelector(({ lang: { data: lang }, jackpot: { diff } }) => ({ lang, diff }))
 
   // componentDidMount
 
@@ -20,9 +21,10 @@ const Jackpot = ({ percent, result, total, start, time }) => {
     const circle = jackpotRef.current
     const circleBorder = jackpotBorderRef.current
     const circumference = 2 * Math.PI * circle.r.baseVal.value
+    const tr = window.screen.width < 1028
 
     circle.style.strokeDasharray = `${circumference} ${circumference}`
-    circleBorder.style.strokeDasharray = `${circumference} ${circumference}`
+    circleBorder.style.strokeDasharray = `${tr ? circumference - 3 : circumference} ${circumference}`
     circle.style.strokeDashoffset = circumference
     circleBorder.style.strokeDashoffset = circumference - 10
 
@@ -35,8 +37,10 @@ const Jackpot = ({ percent, result, total, start, time }) => {
     let interval
     if (start) {
       interval = setInterval(() => {
-        const difference = 20 - (dayjs().unix() - time)
+        const serverDiff = dayjs().valueOf() + diff
+        const difference = 20 - parseInt((serverDiff - dayjs(time * 1000).valueOf()) / 1000)
         const count = difference <= 0 ? 0 : difference
+        console.log(serverDiff - dayjs(time * 1000).valueOf())
         setTime(count)
       }, 1000)
     }
@@ -65,7 +69,7 @@ const Jackpot = ({ percent, result, total, start, time }) => {
   const rotate = () => {
     const resultDeg = result ? (result * 360) / 100 + 3690.5 : 89.8
     const target = svgRef.current
-    target.style.transform = `rotate(-${resultDeg}deg)`
+    target.style.transform = result ? `rotate(-${resultDeg}deg)` : ''
   }
 
   const timerBlock = () => {
@@ -101,27 +105,55 @@ const Jackpot = ({ percent, result, total, start, time }) => {
           </div>
         </div>
       </div>
-      <svg className={s.jackpot} ref={svgRef} width={470} height={470}>
-        <circle stroke="#bfbefc" strokeWidth={20} cx={235} cy={235} r={212.5}></circle>
-        <circle
-          ref={jackpotBorderRef}
-          stroke="#232728"
-          strokeWidth={22}
-          cx={235}
-          cy={235}
-          r={212.5}
-          style={{ transform: 'rotate(-1.5deg)', transformOrigin: '51% center', transition: 'all 0.1s ease 0s' }}
-        ></circle>
-        <circle
-          ref={jackpotRef}
-          style={{ transition: 'all 0.1s ease 0s' }}
-          stroke="#6f7adc"
-          strokeWidth={20}
-          cx={235}
-          cy={235}
-          r={212.5}
-        ></circle>
-      </svg>
+      <Media query={{ maxWidth: 1028 }}>
+        {(match) =>
+          match ? (
+            <svg className={s.jackpot} ref={svgRef} width={310} height={310}>
+              <circle stroke="#bfbefc" strokeWidth={15} cx={155} cy={155} r={140}></circle>
+              <circle
+                ref={jackpotBorderRef}
+                stroke="#232728"
+                strokeWidth={17}
+                cx={155}
+                cy={155}
+                r={140}
+                style={{ transform: 'rotate(-1.5deg)', transformOrigin: '51% center', transition: 'all 0.1s ease 0s' }}
+              ></circle>
+              <circle
+                ref={jackpotRef}
+                style={{ transition: 'all 0.1s ease 0s' }}
+                stroke="#6f7adc"
+                strokeWidth={16}
+                cx={155}
+                cy={155}
+                r={140}
+              ></circle>
+            </svg>
+          ) : (
+            <svg className={s.jackpot} ref={svgRef} width={470} height={470}>
+              <circle stroke="#bfbefc" strokeWidth={20} cx={235} cy={235} r={212.5}></circle>
+              <circle
+                ref={jackpotBorderRef}
+                stroke="#232728"
+                strokeWidth={22}
+                cx={235}
+                cy={235}
+                r={212.5}
+                style={{ transform: 'rotate(-1.5deg)', transformOrigin: '51% center', transition: 'all 0.1s ease 0s' }}
+              ></circle>
+              <circle
+                ref={jackpotRef}
+                style={{ transition: 'all 0.1s ease 0s' }}
+                stroke="#6f7adc"
+                strokeWidth={20}
+                cx={235}
+                cy={235}
+                r={212.5}
+              ></circle>
+            </svg>
+          )
+        }
+      </Media>
     </div>
   )
 }

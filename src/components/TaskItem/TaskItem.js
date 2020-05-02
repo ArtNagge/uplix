@@ -6,9 +6,9 @@ import checkLang from '../../utils/checkLang'
 import s from './styles.scss'
 import SvgIcon from '../SvgIcon'
 
-const HistoryProfile = ({ event, prize, progress }) => {
+const HistoryProfile = ({ event, prize, progress, can_activate, onClick }) => {
   const { current, purpose } = progress
-  const width = (current * 100) / purpose
+  const width = current >= purpose ? purpose : (current * 100) / purpose
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
 
   return (
@@ -27,7 +27,15 @@ const HistoryProfile = ({ event, prize, progress }) => {
           </span>
           <SvgIcon icon="gem" classes={s.task_control_prize_icon} />
         </div>
-        <button className={s.task_control_prize_button}>Забрать</button>
+        {can_activate ? (
+          <button onClick={onClick} className={cn(s.task_control_prize_button, s.task_control_prize_button_active)}>
+            Забрать
+          </button>
+        ) : (
+          <button onClick={onClick} className={s.task_control_prize_button}>
+            Забрать
+          </button>
+        )}
       </div>
     </div>
   )
