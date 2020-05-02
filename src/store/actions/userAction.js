@@ -7,6 +7,25 @@ const userBet = (bet) => (dispatch) => {
   return dispatch(data)
 }
 
+const guestsInfo = (payload) => (dispatch) => {
+  const { id, name, picture } = payload
+  const data = {
+    type: 'GUESTS_USER_INFO',
+    payload: { id, name, picture },
+  }
+
+  dispatch(data)
+}
+
+const guestsTasks = (payload) => (dispatch) => {
+  const data = {
+    type: 'GUESTS_USER_TASKS',
+    payload,
+  }
+
+  dispatch(data)
+}
+
 const allHistory = (payload) => (dispatch) => {
   try {
     const data = {
@@ -81,4 +100,4 @@ const getBalance = (payload) => (dispatch) => {
   }
 }
 
-export { userBet, authUser, getUserInfo, logoutUser, getBalance, allHistory, allTasks }
+export { userBet, authUser, getUserInfo, logoutUser, getBalance, allHistory, allTasks, guestsInfo, guestsTasks }

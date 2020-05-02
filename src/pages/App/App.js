@@ -5,11 +5,21 @@ import { routs } from '../../utils/config'
 import { Sidebar } from '../../components/Sidebar'
 import { Chat } from '../../components/Chat'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { getUserInfo, logoutUser, authUser, getBalance, allHistory, allTasks } from '../../store/actions/userAction'
+import {
+  getUserInfo,
+  logoutUser,
+  authUser,
+  getBalance,
+  allHistory,
+  allTasks,
+  guestsInfo,
+  guestsTasks,
+} from '../../store/actions/userAction'
 import { initChat, chat, timerInit } from '../../store/actions/chatAction'
 import { getJackpot, makeBet, clientServerDiff } from '../../store/actions/jackpotAction'
 import { getLangResourse, getStorageResourse } from '../../store/actions/langAction'
 import { socketConnect } from '../../store/actions/socket'
+import { appLoad } from '../../store/actions/appAction'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import sendSocket from '../../utils/sendSocket'
 import Media from 'react-media'
@@ -17,6 +27,9 @@ import Media from 'react-media'
 import s from './styles.scss'
 import dayjs from 'dayjs'
 import HeaderMobile from '../../components/HeaderMobile'
+import ErrorBoundary from '../../components/ErrorBoundary'
+
+import Loader from '../../components/Loader'
 
 class App extends PureComponent {
   state = {
@@ -46,6 +59,9 @@ class App extends PureComponent {
       clientServerDiff,
       allHistory,
       allTasks,
+      appLoad,
+      guestsInfo,
+      guestsTasks,
     } = this.props
 
     const lang_hash = localStorage.getItem('lang_hash')
@@ -76,12 +92,23 @@ class App extends PureComponent {
           // TODO: pick up
           break
         }
+        case 'tasksGetId': {
+          guestsTasks(info.response)
+          break
+        }
+        case 'usersGetById': {
+          guestsInfo(info.response)
+          appLoad(false)
+          break
+        }
         case 'tasksGet': {
           allTasks(info.response)
+          appLoad(false)
           break
         }
         case 'paymentsHistory': {
           allHistory(info.response)
+          appLoad(false)
           break
         }
         case 'getServerTime': {
@@ -149,6 +176,7 @@ class App extends PureComponent {
         case 'wheelGet': {
           this.addSubscribe('wheel')
           getJackpot(info)
+          appLoad(false)
           break
         }
       }
@@ -188,35 +216,39 @@ class App extends PureComponent {
 
     return (
       <Router>
-        <div className={s.content_wrapper}>
-          <Sidebar
-            onClick={this.closeMenu}
-            activeMenu={activeMenu}
-            ws={this.ws}
-            user={user}
-            logoutUser={() => logoutUser()}
-          />
-          <div className={s.content}>
-            <Media query={{ maxWidth: 1028 }}>
-              {(match) =>
-                match ? (
-                  <HeaderMobile
-                    handleInvisible={this.handleInvisible}
-                    activeMenu={activeMenu}
-                    activeChat={activeChat}
-                    logoutUser={() => logoutUser()}
-                  />
-                ) : null
-              }
-            </Media>
-            <Switch>
-              {routs.map((el, index) => (
-                <Route key={index} exact={el.exact} path={el.path} component={el.component} />
-              ))}
-            </Switch>
+        <Loader>
+          <div className={s.content_wrapper}>
+            <Sidebar
+              onClick={this.closeMenu}
+              activeMenu={activeMenu}
+              ws={this.ws}
+              user={user}
+              logoutUser={() => logoutUser()}
+            />
+            <div className={s.content}>
+              <Media query={{ maxWidth: 1028 }}>
+                {(match) =>
+                  match ? (
+                    <HeaderMobile
+                      handleInvisible={this.handleInvisible}
+                      activeMenu={activeMenu}
+                      activeChat={activeChat}
+                      logoutUser={() => logoutUser()}
+                    />
+                  ) : null
+                }
+              </Media>
+              <Switch>
+                <ErrorBoundary>
+                  {routs.map((el, index) => (
+                    <Route key={index} exact={el.exact} path={el.path} component={el.component} />
+                  ))}
+                </ErrorBoundary>
+              </Switch>
+            </div>
+            <Chat activeChat={activeChat} online={online} ws={this.ws} user={user} messages={messages} />
           </div>
-          <Chat activeChat={activeChat} online={online} ws={this.ws} user={user} messages={messages} />
-        </div>
+        </Loader>
       </Router>
     )
   }
@@ -242,4 +274,7 @@ export default connect(mapStateToProps, {
   clientServerDiff,
   allHistory,
   allTasks,
+  appLoad,
+  guestsInfo,
+  guestsTasks,
 })(App)

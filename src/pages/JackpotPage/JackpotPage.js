@@ -2,6 +2,7 @@ import cn from 'classnames'
 import { connect } from 'react-redux'
 import Jackpot from '../../components/Jackpot/Jackpot'
 import { connectCounter } from '../../store/actions/socket'
+import { appLoad } from '../../store/actions/appAction'
 import React, { PureComponent, createRef } from 'react'
 import sendSocket from '../../utils/sendSocket'
 import Media from 'react-media'
@@ -34,8 +35,9 @@ class JackpotPage extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { connectCounter } = this.props
+    const { connectCounter, appLoad } = this.props
     connectCounter(1)
+    appLoad(true)
   }
 
   handleBet = (evt) => {
@@ -213,7 +215,7 @@ class JackpotPage extends PureComponent {
     const purpleTotal = Math.round(purple.reduce((a, { bets }) => a + Number(bets), 0).toFixed(1))
     const total = Number(pinkTotal) + Number(purpleTotal)
     const percent = (Math.floor(purpleTotal) / (Math.floor(purpleTotal) + Math.floor(pinkTotal))) * 100 || 0
-
+    // this.foo.bar = 0
     return (
       <>
         <div className={s.jackpot_wrapper}>
@@ -378,4 +380,4 @@ const mapStateToProps = ({
   return { ws, connect, countConnect, bets, history, topDay, user, result, lang, odds, time, start }
 }
 
-export default connect(mapStateToProps, { connectCounter })(JackpotPage)
+export default connect(mapStateToProps, { connectCounter, appLoad })(JackpotPage)

@@ -9,7 +9,7 @@ const getJackpot = ({ response, status }) => (dispatch) => {
       time,
     } = response
     const data = {
-      type: 'JACKPOT_SUCCESS',
+      type: 'JACKPOT',
       payload: { bets, odds, history, day_top },
     }
     time && dispatch({ type: 'TIMER_START', payload: time })
@@ -41,7 +41,7 @@ const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_histo
     }
     if (is_spin) {
       const data = {
-        type: 'BET_RESULT_SUCCESS',
+        type: 'BET_RESULT',
         payload: spin,
       }
       return dispatch(data)

@@ -6,7 +6,7 @@ import checkLang from '../../utils/checkLang'
 import s from './styles.scss'
 import SvgIcon from '../SvgIcon'
 
-const HistoryProfile = ({ event, prize, progress, can_activate, onClick }) => {
+const HistoryProfile = ({ event, prize, progress, can_activate, onClick, guestId }) => {
   const { current, purpose } = progress
   const width = current >= purpose ? purpose : (current * 100) / purpose
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
@@ -20,23 +20,25 @@ const HistoryProfile = ({ event, prize, progress, can_activate, onClick }) => {
           <div className={s.task_main_progress_current} style={{ width: `calc(${width}% - 8px)` }} />
         </div>
       </div>
-      <div className={s.task_control}>
-        <div className={s.task_control_prize}>
-          <span>
-            {checkLang(lang, 'prize')} {prize}
-          </span>
-          <SvgIcon icon="gem" classes={s.task_control_prize_icon} />
+      {!guestId && (
+        <div className={s.task_control}>
+          <div className={s.task_control_prize}>
+            <span>
+              {checkLang(lang, 'prize')} {prize}
+            </span>
+            <SvgIcon icon="gem" classes={s.task_control_prize_icon} />
+          </div>
+          {can_activate ? (
+            <button onClick={onClick} className={cn(s.task_control_prize_button, s.task_control_prize_button_active)}>
+              Забрать
+            </button>
+          ) : (
+            <button onClick={onClick} className={s.task_control_prize_button}>
+              Забрать
+            </button>
+          )}
         </div>
-        {can_activate ? (
-          <button onClick={onClick} className={cn(s.task_control_prize_button, s.task_control_prize_button_active)}>
-            Забрать
-          </button>
-        ) : (
-          <button onClick={onClick} className={s.task_control_prize_button}>
-            Забрать
-          </button>
-        )}
-      </div>
+      )}
     </div>
   )
 }

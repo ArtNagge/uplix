@@ -3,7 +3,7 @@ const getLangResourse = ({ response, status }) => (dispatch) => {
 
   if (status === 'success') {
     const data = {
-      type: 'GET_LANGUAGE_SUCCESS',
+      type: 'GET_LANGUAGE',
       payload: response,
     }
     return dispatch(data)
@@ -17,7 +17,7 @@ const getStorageResourse = (payload) => (dispatch) => {
 
   if (payload) {
     const data = {
-      type: 'GET_RESOURSE_SUCCESS',
+      type: 'GET_RESOURSE',
       payload,
     }
     return dispatch(data)

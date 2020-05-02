@@ -8,10 +8,16 @@ import Profile from '../../components/Profile'
 import checkLang from '../../utils/checkLang'
 import sendSocket from '../../utils/sendSocket'
 import { connectCounter } from '../../store/actions/socket'
+import { appLoad } from '../../store/actions/appAction'
 
 import s from './styles.scss'
+import AuthCheck from '../../components/AuthCheck/AuthCheck'
 
-const ProfilePage = () => {
+const ProfilePage = ({
+  match: {
+    params: { id },
+  },
+}) => {
   const dispatch = useDispatch()
   const [active, setActive] = useState('profile')
   const { lang, ws, connect, countConnect } = useSelector(
@@ -26,44 +32,61 @@ const ProfilePage = () => {
   useEffect(() => {
     if (connect && countConnect) {
       dispatch(connectCounter(0))
-      sendSocket(ws, 3, { method: 'payments.history', parameters: { action: '*' } }, 'paymentsHistory')
-      sendSocket(ws, 3, { method: 'tasks.get' }, 'tasksGet')
+      if (id) {
+        sendSocket(ws, 3, { method: 'users.getById', parameters: { user_id: id } }, 'usersGetById')
+        sendSocket(ws, 3, { method: 'tasks.get', parameters: { user_id: id } }, 'tasksGetId')
+      } else {
+        sendSocket(ws, 3, { method: 'payments.history', parameters: { action: '*' } }, 'paymentsHistory')
+        sendSocket(ws, 3, { method: 'tasks.get' }, 'tasksGet')
+      }
     }
   }, [connect, countConnect])
 
   useEffect(() => {
     return () => {
       dispatch(connectCounter(1))
+      dispatch(appLoad(true))
     }
   }, [])
 
-  const tabs = [
-    {
-      name: checkLang(lang, 'profile'),
-      value: 'profile',
-    },
-    {
-      name: checkLang(lang, 'tasks'),
-      value: 'tasks',
-    },
-    {
-      name: checkLang(lang, 'payments'),
-      value: 'payments',
-    },
-    {
-      name: checkLang(lang, 'promocodes'),
-      value: 'promo',
-    },
-  ]
+  const tabs = !id
+    ? [
+        {
+          name: checkLang(lang, 'profile'),
+          value: 'profile',
+        },
+        {
+          name: checkLang(lang, 'tasks'),
+          value: 'tasks',
+        },
+        {
+          name: checkLang(lang, 'payments'),
+          value: 'payments',
+        },
+        {
+          name: checkLang(lang, 'promocodes'),
+          value: 'promo',
+        },
+      ]
+    : [
+        {
+          name: checkLang(lang, 'profile'),
+          value: 'profile',
+        },
+        {
+          name: checkLang(lang, 'tasks'),
+          value: 'tasks',
+        },
+      ]
 
   const handleChange = (value) => setActive(value)
 
   const selectContent = () => {
     switch (active) {
       case 'profile':
-        return <Profile />
+        return <Profile guestId={id} />
       case 'tasks':
-        return <Tasks />
+        return <Tasks guestId={id} />
       case 'payments':
         return <Payments />
       case 'promo':
@@ -74,20 +97,22 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className={s.profile}>
-      <div className={s.profile_tabs}>
-        {tabs.map((tab, idx) => (
-          <button
-            className={cn(s.profile_tab, tab.value === active && s.profile_tab_active)}
-            onClick={() => handleChange(tab.value)}
-            key={`tab_${idx}`}
-          >
-            {tab.name}
-          </button>
-        ))}
+    <AuthCheck>
+      <div className={s.profile}>
+        <div className={s.profile_tabs}>
+          {tabs.map((tab, idx) => (
+            <button
+              className={cn(s.profile_tab, tab.value === active && s.profile_tab_active)}
+              onClick={() => handleChange(tab.value)}
+              key={`tab_${idx}`}
+            >
+              {tab.name}
+            </button>
+          ))}
+        </div>
+        <div className={s.profile_content}>{selectContent()}</div>
       </div>
-      <div className={s.profile_content}>{selectContent()}</div>
-    </div>
+    </AuthCheck>
   )
 }
 

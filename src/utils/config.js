@@ -17,6 +17,11 @@ const routs = [
     path: '/profile',
   },
   {
+    component: ProfilePage,
+    exact: true,
+    path: '/profile/:id',
+  },
+  {
     component: LeaderboardPage,
     exact: true,
     path: '/leaderboard',

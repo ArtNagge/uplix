@@ -1,9 +1,15 @@
 import React, { PureComponent } from 'react'
 import { Redirect } from 'react-router-dom'
+import { appLoad } from '../../store/actions/appAction'
 import { connect } from 'react-redux'
 import sendSocket from '../../utils/sendSocket'
 
 class AuthPage extends PureComponent {
+  componentDidMount() {
+    const { appLoad } = this.props
+    appLoad(true)
+  }
+
   render() {
     const { connect, ws, auth } = this.props
 
@@ -11,10 +17,10 @@ class AuthPage extends PureComponent {
       const url = new URL(window.location.href)
       const requestCode = url.search.split('=')[1]
       const auth_data = { code: requestCode }
-      sendSocket(ws, 3, { method: 'auth.init', parameters: { social: 'vkontakte', auth_data, dev: 1 } }, 'authData')
+      sendSocket(ws, 3, { method: 'auth.init', parameters: { social: 'vkontakte', auth_data } }, 'authData')
     }
 
-    return <h1>Auth</h1> //auth ? <Redirect to="/" /> :
+    return auth ? <Redirect to="/" /> : <h1>Auth</h1>
   }
 }
 
@@ -27,4 +33,4 @@ const mapStateToProps = ({
   return { auth, ws, connect }
 }
 
-export default connect(mapStateToProps, {})(AuthPage)
+export default connect(mapStateToProps, { appLoad })(AuthPage)

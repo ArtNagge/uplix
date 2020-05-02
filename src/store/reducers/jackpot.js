@@ -14,19 +14,12 @@ const jackpot = {
   },
   history: [],
   result: 0,
-  request: undefined,
   timer: { time: 0, start: false },
   diff: 0,
 }
 
 export default function (state = jackpot, action) {
   switch (action.type) {
-    case 'JACKPOT_REQUEST': {
-      return {
-        ...state,
-        request: 'JACKPOT_REQUEST',
-      }
-    }
     case 'DAY_TOP': {
       return {
         ...state,
@@ -39,7 +32,7 @@ export default function (state = jackpot, action) {
         diff: action.payload,
       }
     }
-    case 'JACKPOT_SUCCESS': {
+    case 'JACKPOT': {
       return {
         ...state,
         bets: { ...state.bets, ...action.payload.bets },
@@ -50,24 +43,10 @@ export default function (state = jackpot, action) {
           avatar: action.payload.day_top.user.picture,
           win: action.payload.day_top.amount,
         },
-        request: 'JACKPOT_SUCCESS',
       }
     }
     case 'JACKPOT_HISTORY': {
       return { ...state, history: action.payload }
-    }
-    case 'JACKPOT_FAIL': {
-      return {
-        ...state,
-        request: 'JACKPOT_FAIL',
-      }
-    }
-
-    case 'BET_REQUEST': {
-      return {
-        ...state,
-        request: 'JACKPOT_REQUEST',
-      }
     }
     case 'BET_SUCCESS': {
       const { bet, odds } = action.payload
@@ -86,39 +65,19 @@ export default function (state = jackpot, action) {
         ...state,
         bets: { ...state.bets, [color]: newArr },
         odds: odds,
-        request: 'JACKPOT_SUCCESS',
       }
     }
-    case 'BET_RESULT_SUCCESS': {
+    case 'BET_RESULT': {
       return {
         ...state,
         timer: { time: 0, start: false },
         result: action.payload,
       }
     }
-    case 'BET_FAIL': {
-      return {
-        ...state,
-        request: 'JACKPOT_FAIL',
-      }
-    }
-    case 'JACKPOT_RESULT_REQUEST': {
-      return {
-        ...state,
-        request: 'JACKPOT_RESULT_REQUEST',
-      }
-    }
-    case 'JACKPOT_RESULT_SUCCESS': {
+    case 'JACKPOT_RESULT': {
       return {
         ...state,
         result: action.payload.result,
-        request: 'JACKPOT_RESULT_SUCCESS',
-      }
-    }
-    case 'JACKPOT_RESULT_FAIL': {
-      return {
-        ...state,
-        request: 'JACKPOT_RESULT_FAIL',
       }
     }
     case 'TIMER_START': {

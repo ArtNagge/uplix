@@ -1,7 +1,8 @@
 import { connect } from 'react-redux'
 import React, { PureComponent } from 'react'
 import MiniBlockInfo from '../../components/MiniBlockInfo/MiniBlockInfo'
-import { leaderboardAction } from '../../store/actions'
+import { getLeaderboard } from '../../store/actions/leaderboardAction'
+import { appLoad } from '../../store/actions/appAction'
 import checkLang from '../../utils/checkLang'
 
 import s from './styles.scss'
@@ -10,9 +11,16 @@ import { ListLeaderboard } from '../../components/ListLeaderboard'
 
 class JackpotPage extends PureComponent {
   componentDidMount() {
-    const { getLeaderboard } = this.props
+    const { getLeaderboard, appLoad } = this.props
 
-    leaderboardAction.getLeaderboard()
+    getLeaderboard()
+    appLoad(false)
+  }
+
+  componentWillUnmount() {
+    const { appLoad } = this.props
+
+    appLoad(true)
   }
 
   render() {
@@ -54,8 +62,4 @@ const mapStateToProps = ({ leaderboard, user, lang: { data: lang } }) => ({
   lang,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  getLeaderboard: () => dispatch(getLeaderboard()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(JackpotPage)
+export default connect(mapStateToProps, { getLeaderboard, appLoad })(JackpotPage)

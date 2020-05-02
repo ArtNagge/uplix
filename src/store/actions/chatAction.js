@@ -3,7 +3,7 @@ const initChat = ({ response, status }) => (dispatch) => {
 
   if (status === 'success') {
     const data = {
-      type: 'CHAT_SUCCESS',
+      type: 'CHAT',
       payload: response,
     }
     return dispatch(data)
@@ -22,7 +22,7 @@ const chat = ({ message, time, user }) => (dispatch) => {
       user,
     }
     const data = {
-      type: 'CHAT_MESSAGE_SUCCESS',
+      type: 'CHAT_MESSAGE',
       payload,
     }
     return dispatch(data)

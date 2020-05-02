@@ -11,6 +11,12 @@ const user = {
   access_token: undefined,
   history: [],
   tasks: {},
+  guests: {
+    id: null,
+    name: '',
+    picture: '',
+    tasks: {},
+  },
 }
 
 export default function (state = user, action) {
@@ -73,6 +79,19 @@ export default function (state = user, action) {
       return {
         ...state,
         tasks: action.payload,
+      }
+    }
+
+    case 'GUESTS_USER_INFO': {
+      return {
+        ...state,
+        guests: { ...action.payload },
+      }
+    }
+    case 'GUESTS_USER_TASKS': {
+      return {
+        ...state,
+        guests: { ...state.guests, tasks: action.payload },
       }
     }
 

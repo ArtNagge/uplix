@@ -1,6 +1,7 @@
 import cn from 'classnames'
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { appLoad } from '../../store/actions/appAction'
 import { faq } from '../../utils/config'
 
 import s from './styles.scss'
@@ -9,7 +10,15 @@ import checkLang from '../../utils/checkLang'
 
 const JackpotPage = () => {
   const [openId, setOpenId] = useState(undefined)
+  const dispatch = useDispatch()
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
+
+  useEffect(() => {
+    dispatch(appLoad(false))
+    return () => {
+      dispatch(appLoad(true))
+    }
+  }, [])
 
   const question = (f, index) => {
     const { title, description } = f
