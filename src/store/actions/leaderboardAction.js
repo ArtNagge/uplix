@@ -1,14 +1,12 @@
 const getLeaderboard = () => (dispatch) => {
-  dispatch({ type: 'LEADERBOARD_REQUEST' })
-
   try {
     const data = {
-      type: 'LEADERBOARD_SUCCESS',
+      type: 'LEADERBOARD',
       payload: {},
     }
     return dispatch(data)
-  } catch {
-    dispatch({ type: 'LEADERBOARD_FAIL' })
+  } catch (error) {
+    console.log(error)
   }
 }
 

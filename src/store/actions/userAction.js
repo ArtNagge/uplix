@@ -51,19 +51,19 @@ const allTasks = (payload) => (dispatch) => {
 }
 
 const authUser = ({ response, status }) => (dispatch) => {
-  dispatch({ type: 'USER_AUTH_REQUEST' })
+  try {
+    if (status === 'success') {
+      const { access_token, user } = response
 
-  if (status === 'success') {
-    const { access_token, user } = response
-
-    const data = {
-      type: 'USER_AUTH_SUCCESS',
-      payload: { access_token, user },
+      const data = {
+        type: 'USER_AUTH_SUCCESS',
+        payload: { access_token, user },
+      }
+      dispatch(data)
     }
-    return dispatch(data)
+  } catch (error) {
+    console.log(error)
   }
-
-  return dispatch({ type: 'USER_AUTH_FAIL' })
 }
 
 const logoutUser = () => (dispatch) =>
@@ -71,24 +71,22 @@ const logoutUser = () => (dispatch) =>
     type: 'USER_LOGOUT',
   })
 
-const getUserInfo = ({ response, status }, access_token) => (dispatch) => {
-  dispatch({ type: 'USER_GET_INFO_REQUEST' })
-
-  if (status === 'success') {
-    const data = {
-      type: 'USER_GET_INFO_SUCCESS',
-      payload: { access_token, user: response },
+const getUserInfo = ({ response, status }, access_token) => async (dispatch) => {
+  try {
+    if (status === 'success') {
+      const data = {
+        type: 'USER_GET_INFO_SUCCESS',
+        payload: { access_token, user: response },
+      }
+      await dispatch({ type: 'CHAT_ONLINE_INIT', payload: response.online })
+      await dispatch(data)
     }
-    dispatch({ type: 'CHAT_ONLINE_INIT', payload: response.online })
-    return dispatch(data)
+  } catch (error) {
+    console.log(error)
   }
-
-  dispatch({ type: 'USER_GET_INFO_FAIL' })
 }
 
 const getBalance = (payload) => (dispatch) => {
-  dispatch({ type: 'USER_BALANCE_REQUEST' })
-
   try {
     const data = {
       type: 'USER_BALANCE_SUCCESS',
@@ -96,7 +94,7 @@ const getBalance = (payload) => (dispatch) => {
     }
     return dispatch(data)
   } catch (error) {
-    dispatch({ type: 'USER_BALANCE_FAIL' })
+    console.log(error)
   }
 }
 

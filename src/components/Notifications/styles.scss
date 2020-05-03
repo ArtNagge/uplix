@@ -1,0 +1,42 @@
+@import '../../theme/variables.scss';
+
+.notif_container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  position: absolute !important;
+  z-index: 50 !important;
+  right: 0;
+  top: 0;
+}
+.notify {
+  padding: 13px 25px 13px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("data:image/svg+xml,%3Csvg width='226' height='33' viewBox='0 0 226 33' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.0331 6.99024C-0.39958 3.68842 2.02067 0 5.61992 0H226V33H18.8806C14.8966 33 11.2928 30.6352 9.70695 26.9805L1.0331 6.99024Z' fill='%236F7ADC' fill-opacity='0.5'/%3E%3C/svg%3E%0A")
+    no-repeat left center;
+  background-size: auto 100%;
+  position: relative;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background-color: rgba($purple_02, 0.5);
+  }
+
+  &_body {
+    color: #fff;
+    font-size: 14px;
+  }
+}

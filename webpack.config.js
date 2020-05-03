@@ -8,20 +8,20 @@ const PATHS = {
   main: path.join(process.cwd()),
   src: path.join(__dirname, './src'),
   dist: path.join(__dirname, './dist'),
-  assets: 'assets/'
+  assets: 'assets/',
 }
 
 module.exports = {
   entry: {
-    app: PATHS.src
+    app: PATHS.src,
   },
   externals: {
-    paths: PATHS
+    paths: PATHS,
   },
   output: {
     filename: `${PATHS.assets}js/[name].[hash].js`,
     path: PATHS.dist,
-    publicPath: '/'
+    publicPath: '/',
   },
   optimization: {
     splitChunks: {
@@ -30,15 +30,15 @@ module.exports = {
           name: 'vendors',
           test: /node_modules/,
           chunks: 'all',
-          enforce: true
-        }
-      }
-    }
+          enforce: true,
+        },
+      },
+    },
   },
   resolve: {
     alias: {
-      Utils: `${PATHS.src}/utils`
-    }
+      Utils: `${PATHS.src}/utils`,
+    },
   },
   module: {
     rules: [
@@ -46,23 +46,23 @@ module.exports = {
         test: /\.js$/,
         exclude: /node-modules/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.(gif|png|jpe?g|webp|svg)$/,
         loader: 'file-loader',
         options: {
           limit: 10240,
-          name: `${PATHS.assets}img/[hash:8].[ext]`
-        }
+          name: `${PATHS.assets}img/[hash:8].[ext]`,
+        },
       },
       {
         test: /\.(scss|sass)$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: { reloadAll: true }
+            options: { reloadAll: true },
           },
           {
             loader: 'css-loader',
@@ -71,27 +71,31 @@ module.exports = {
               modules: USE_CSS_MODULES && {
                 localIdentName: '[name]__[local]--[hash:base64:5]',
                 context: path.resolve(process.cwd(), 'src'),
-                hashPrefix: 'NaggeHash'
+                hashPrefix: 'NaggeHash',
               },
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           { loader: 'postcss-loader' },
-          { loader: 'sass-loader', options: { sourceMap: true } }
-        ]
-      }
-    ]
+          { loader: 'sass-loader', options: { sourceMap: true } },
+        ],
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: `${PATHS.assets}css/[name].[hash].css`,
-      chunkFilename: `${PATHS.assets}css/[id].[hash].css`
+      chunkFilename: `${PATHS.assets}css/[id].[hash].css`,
     }),
     new HtmlWebPackPlugin({
-      template: `${PATHS.main}/${PATHS.assets}index.html`
-    })
+      template: `${PATHS.main}/${PATHS.assets}index.html`,
+    }),
   ],
   devServer: {
-    overlay: true
-  }
+    overlay: true,
+  },
 }

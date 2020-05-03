@@ -1,21 +1,25 @@
 const getJackpot = ({ response, status }) => (dispatch) => {
-  dispatch({ type: 'JACKPOT_REQUEST' })
+  try {
+    if (status === 'success') {
+      const {
+        data: { bets, odds },
+        history,
+        day_top,
+        time,
+      } = response
 
-  if (status === 'success') {
-    const {
-      data: { bets, odds },
-      history,
-      day_top,
-      time,
-    } = response
-    const data = {
-      type: 'JACKPOT',
-      payload: { bets, odds, history, day_top },
+      const data = {
+        type: 'JACKPOT',
+        payload: { bets, odds, history, day_top },
+      }
+
+      time && dispatch({ type: 'TIMER_START', payload: time })
+
+      dispatch(data)
     }
-    time && dispatch({ type: 'TIMER_START', payload: time })
-    return dispatch(data)
+  } catch (error) {
+    console.log(error)
   }
-  return dispatch({ type: 'JACKPOT_FAIL' })
 }
 
 const clientServerDiff = (payload) => (dispatch) => {
@@ -29,8 +33,6 @@ const clientServerDiff = (payload) => (dispatch) => {
 const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_history, history, day_top, who }) => (
   dispatch
 ) => {
-  dispatch({ type: 'BET_REQUEST' })
-
   try {
     if (!is_spin && !reopen && !timer_start && !time && !is_history && !day_top) {
       const data = {
@@ -72,7 +74,7 @@ const makeBet = ({ bet, odds, is_spin, reopen, spin, timer_start, time, is_histo
       return dispatch({ type: 'JACKPOT_HISTORY', payload: history })
     }
   } catch (error) {
-    return dispatch({ type: 'BET_FAIL' })
+    console.log(error)
   }
 }
 

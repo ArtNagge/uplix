@@ -11,7 +11,6 @@ import { connectCounter } from '../../store/actions/socket'
 import { appLoad } from '../../store/actions/appAction'
 
 import s from './styles.scss'
-import AuthCheck from '../../components/AuthCheck/AuthCheck'
 
 const ProfilePage = ({
   match: {
@@ -97,22 +96,20 @@ const ProfilePage = ({
   }
 
   return (
-    <AuthCheck>
-      <div className={s.profile}>
-        <div className={s.profile_tabs}>
-          {tabs.map((tab, idx) => (
-            <button
-              className={cn(s.profile_tab, tab.value === active && s.profile_tab_active)}
-              onClick={() => handleChange(tab.value)}
-              key={`tab_${idx}`}
-            >
-              {tab.name}
-            </button>
-          ))}
-        </div>
-        <div className={s.profile_content}>{selectContent()}</div>
+    <div className={s.profile}>
+      <div className={s.profile_tabs}>
+        {tabs.map((tab, idx) => (
+          <button
+            className={cn(s.profile_tab, tab.value === active && s.profile_tab_active)}
+            onClick={() => handleChange(tab.value)}
+            key={`tab_${idx}`}
+          >
+            {tab.name}
+          </button>
+        ))}
       </div>
-    </AuthCheck>
+      <div className={s.profile_content}>{selectContent()}</div>
+    </div>
   )
 }
 

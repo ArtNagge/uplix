@@ -21,6 +21,8 @@ import { getLangResourse, getStorageResourse } from '../../store/actions/langAct
 import { socketConnect } from '../../store/actions/socket'
 import { appLoad } from '../../store/actions/appAction'
 import ReconnectingWebSocket from 'reconnecting-websocket'
+import Notifications from '../../components/Notifications'
+import { toast } from 'react-toastify'
 import sendSocket from '../../utils/sendSocket'
 import Media from 'react-media'
 
@@ -139,6 +141,7 @@ class App extends PureComponent {
         }
         case 'authData': {
           authUser(info)
+          sendSocket(this.ws, 1, info.response.access_token, 'getUser')
           break
         }
         case 'auth': {
@@ -167,10 +170,15 @@ class App extends PureComponent {
           break
         }
         case 'bet': {
+          toast(info.response)
           break
         }
         case 'balance': {
           getBalance(info.message)
+          break
+        }
+        case 'chatSend': {
+          toast(info.response)
           break
         }
         case 'wheelGet': {
@@ -226,6 +234,7 @@ class App extends PureComponent {
               logoutUser={() => logoutUser()}
             />
             <div className={s.content}>
+              <Notifications />
               <Media query={{ maxWidth: 1028 }}>
                 {(match) =>
                   match ? (

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 
 class ErrorBoundary extends React.Component {
   state = { error: false }
@@ -9,6 +10,14 @@ class ErrorBoundary extends React.Component {
     }
   }
 
+  handleRedirect() {
+    this.setState({
+      error: false,
+    })
+
+    return <Redirect to="/" />
+  }
+
   componentDidCatch(error) {
     this.setState({
       error: true,
@@ -16,14 +25,7 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    if (this.state.error) {
-      return (
-        <div>
-          <h2>Something went wrong.</h2>
-        </div>
-      )
-    }
-    return this.props.children
+    return this.state.error ? this.handleRedirect() : this.props.children
   }
 }
 

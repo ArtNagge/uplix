@@ -1,19 +1,18 @@
 const initChat = ({ response, status }) => (dispatch) => {
-  dispatch({ type: 'CHAT_REQUEST' })
-
-  if (status === 'success') {
-    const data = {
-      type: 'CHAT',
-      payload: response,
+  try {
+    if (status === 'success') {
+      const data = {
+        type: 'CHAT',
+        payload: response,
+      }
+      dispatch(data)
     }
-    return dispatch(data)
+  } catch (error) {
+    console.log(error)
   }
-  return dispatch({ type: 'CHAT_FAIL' })
 }
 
 const chat = ({ message, time, user }) => (dispatch) => {
-  dispatch({ type: 'CHAT_MESSAGE_REQUEST' })
-
   try {
     const payload = {
       id: user.id,
@@ -25,9 +24,9 @@ const chat = ({ message, time, user }) => (dispatch) => {
       type: 'CHAT_MESSAGE',
       payload,
     }
-    return dispatch(data)
+    dispatch(data)
   } catch (error) {
-    return dispatch({ type: 'CHAT_MESSAGE_FAIL' })
+    console.log(error)
   }
 }
 
