@@ -21,7 +21,7 @@ const Jackpot = ({ percent, result, total, start, time }) => {
     const circle = jackpotRef.current
     const circleBorder = jackpotBorderRef.current
     const circumference = 2 * Math.PI * circle.r.baseVal.value
-    const tr = window.screen.width < 1028
+    const tr = window.screen.width < 1280
 
     circle.style.strokeDasharray = `${circumference} ${circumference}`
     circleBorder.style.strokeDasharray = `${tr ? circumference - 3 : circumference} ${circumference}`
@@ -105,7 +105,7 @@ const Jackpot = ({ percent, result, total, start, time }) => {
           </div>
         </div>
       </div>
-      <Media query={{ maxWidth: 1028 }}>
+      <Media query={{ maxWidth: 1280 }}>
         {(match) =>
           match ? (
             <svg className={s.jackpot} ref={svgRef} width={310} height={310}>

@@ -14,7 +14,7 @@
   overflow: auto;
   overflow-x: hidden;
 
-  @include breakpoints('1028') {
+  @include breakpoints('1280') {
     margin: 0 auto;
   }
 

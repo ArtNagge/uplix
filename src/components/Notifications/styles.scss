@@ -9,6 +9,11 @@
   z-index: 50 !important;
   right: 0;
   top: 0;
+
+  @include breakpoints('1280') {
+    top: 110px;
+    position: fixed !important;
+  }
 }
 .notify {
   padding: 13px 25px 13px 50px;

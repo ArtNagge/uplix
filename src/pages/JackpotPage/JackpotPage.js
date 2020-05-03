@@ -219,7 +219,7 @@ class JackpotPage extends PureComponent {
     return (
       <>
         <div className={s.jackpot_wrapper}>
-          <Media query={{ maxWidth: 1028 }}>
+          <Media query={{ maxWidth: 1280 }}>
             {(matches) =>
               matches ? (
                 <>

@@ -33,13 +33,24 @@ const ProfilePage = ({
       dispatch(connectCounter(0))
       if (id) {
         sendSocket(ws, 3, { method: 'users.getById', parameters: { user_id: id } }, 'usersGetById')
+        sendSocket(ws, 3, { method: 'payments.history', parameters: { action: 3, user_id: id } }, 'guestsHistory')
         sendSocket(ws, 3, { method: 'tasks.get', parameters: { user_id: id } }, 'tasksGetId')
       } else {
-        sendSocket(ws, 3, { method: 'payments.history', parameters: { action: '*' } }, 'paymentsHistory')
+        sendSocket(ws, 3, { method: 'payments.history', parameters: { action: 3 } }, 'gameHistory')
+        sendSocket(ws, 3, { method: 'payments.history', parameters: { action: 2 } }, 'paymentsHistory')
         sendSocket(ws, 3, { method: 'tasks.get' }, 'tasksGet')
       }
     }
   }, [connect, countConnect])
+
+  useEffect(() => {
+    dispatch(appLoad(true))
+    if (id && connect) {
+      sendSocket(ws, 3, { method: 'users.getById', parameters: { user_id: id } }, 'usersGetById')
+      sendSocket(ws, 3, { method: 'payments.history', parameters: { action: 3, user_id: id } }, 'guestsHistory')
+      sendSocket(ws, 3, { method: 'tasks.get', parameters: { user_id: id } }, 'tasksGetId')
+    }
+  }, [id])
 
   useEffect(() => {
     return () => {

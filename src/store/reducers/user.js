@@ -10,12 +10,14 @@ const user = {
   },
   access_token: undefined,
   history: [],
+  payments: [],
   tasks: {},
   guests: {
     id: null,
     name: '',
     picture: '',
     tasks: {},
+    history: [],
   },
 }
 
@@ -68,7 +70,14 @@ export default function (state = user, action) {
       return user
     }
 
-    case 'USER_ALL_HISTORY': {
+    case 'USER_PAY_HISTORY': {
+      return {
+        ...state,
+        payments: action.payload,
+      }
+    }
+
+    case 'USER_GAME_HISTORY': {
       return {
         ...state,
         history: action.payload,
@@ -85,13 +94,19 @@ export default function (state = user, action) {
     case 'GUESTS_USER_INFO': {
       return {
         ...state,
-        guests: { ...action.payload },
+        guests: { ...state.guests, ...action.payload },
       }
     }
     case 'GUESTS_USER_TASKS': {
       return {
         ...state,
         guests: { ...state.guests, tasks: action.payload },
+      }
+    }
+    case 'GUESTS_USER_HISTORY': {
+      return {
+        ...state,
+        guests: { ...state.guests, history: action.payload },
       }
     }
 

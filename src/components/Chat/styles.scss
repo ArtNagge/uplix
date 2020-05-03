@@ -166,7 +166,7 @@
     }
   }
 
-  @include breakpoints('1028') {
+  @include breakpoints('1280') {
     width: 100%;
     height: calc(100% - 60px);
     position: fixed;

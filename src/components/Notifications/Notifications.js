@@ -12,7 +12,7 @@ class Notifications extends Component {
           position="top-right"
           closeButton={false}
           hideProgressBar={false}
-          autoClose={3000}
+          autoClose={2000}
           newestOnTop
           closeOnClick
           draggable

@@ -10,7 +10,9 @@ import {
   logoutUser,
   authUser,
   getBalance,
-  allHistory,
+  gameHistory,
+  paymentsHistory,
+  guestsHistory,
   allTasks,
   guestsInfo,
   guestsTasks,
@@ -59,8 +61,10 @@ class App extends PureComponent {
       socketConnect,
       timerInit,
       clientServerDiff,
-      allHistory,
+      gameHistory,
+      paymentsHistory,
       allTasks,
+      guestsHistory,
       appLoad,
       guestsInfo,
       guestsTasks,
@@ -100,6 +104,10 @@ class App extends PureComponent {
         }
         case 'usersGetById': {
           guestsInfo(info.response)
+          break
+        }
+        case 'guestsHistory': {
+          guestsHistory(info.response)
           appLoad(false)
           break
         }
@@ -108,9 +116,13 @@ class App extends PureComponent {
           appLoad(false)
           break
         }
-        case 'paymentsHistory': {
-          allHistory(info.response)
+        case 'gameHistory': {
+          gameHistory(info.response)
           appLoad(false)
+          break
+        }
+        case 'paymentsHistory': {
+          paymentsHistory(info.status === 'success' ? info.response : [])
           break
         }
         case 'getServerTime': {
@@ -235,7 +247,7 @@ class App extends PureComponent {
             />
             <div className={s.content}>
               <Notifications />
-              <Media query={{ maxWidth: 1028 }}>
+              <Media query={{ maxWidth: 1280 }}>
                 {(match) =>
                   match ? (
                     <HeaderMobile
@@ -281,7 +293,9 @@ export default connect(mapStateToProps, {
   getLangResourse,
   getStorageResourse,
   clientServerDiff,
-  allHistory,
+  gameHistory,
+  paymentsHistory,
+  guestsHistory,
   allTasks,
   appLoad,
   guestsInfo,

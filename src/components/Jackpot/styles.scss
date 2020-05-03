@@ -174,13 +174,13 @@
     }
   }
 
-  @media screen and (min-width: 1028px) and (max-width: 1800px) {
+  @media screen and (min-width: 1280px) and (max-width: 1800px) {
     &_game {
       margin-top: 200px;
     }
   }
 
-  @include breakpoints('1028') {
+  @include breakpoints('1280') {
     &_game {
       width: 310px;
       height: 310px;

@@ -11,11 +11,10 @@
   right: 0;
 }
 
-@media only screen and (max-width: 1028px) {
+@media only screen and (max-width: 1280px) {
   .Toastify__toast-container {
-    width: 100vw;
     padding: 0;
-    left: 0;
+    right: 10px;
     margin: 0;
   }
   .Toastify__toast-container--top-right {
@@ -51,7 +50,7 @@
   direction: rtl;
 }
 .Toastify__toast--default {
-  background: url("data:image/svg+xml,%3Csvg width='226' height='33' viewBox='0 0 226 33' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.0331 6.99024C-0.39958 3.68842 2.02067 0 5.61992 0H226V33H18.8806C14.8966 33 11.2928 30.6352 9.70695 26.9805L1.0331 6.99024Z' fill='%236F7ADC' fill-opacity='0.5'/%3E%3C/svg%3E%0A")
+  background: url("data:image/svg+xml,%3Csvg width='443' height='33' viewBox='0 0 443 33' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.08075 7.01136C-0.371127 3.70709 2.04917 0 5.65835 0H443V33H19.0288C15.0616 33 11.4695 30.6548 9.87363 27.0227L1.08075 7.01136Z' fill='%236F7ADC' fill-opacity='0.5'/%3E%3C/svg%3E%0A")
     no-repeat left center;
   background-size: auto 100%;
 }

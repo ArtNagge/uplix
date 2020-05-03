@@ -26,10 +26,31 @@ const guestsTasks = (payload) => (dispatch) => {
   dispatch(data)
 }
 
-const allHistory = (payload) => (dispatch) => {
+const guestsHistory = (payload) => (dispatch) => {
+  const data = {
+    type: 'GUESTS_USER_HISTORY',
+    payload,
+  }
+
+  dispatch(data)
+}
+
+const gameHistory = (payload) => (dispatch) => {
   try {
     const data = {
-      type: 'USER_ALL_HISTORY',
+      type: 'USER_GAME_HISTORY',
+      payload,
+    }
+    dispatch(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const paymentsHistory = (payload) => (dispatch) => {
+  try {
+    const data = {
+      type: 'USER_PAY_HISTORY',
       payload,
     }
     dispatch(data)
@@ -98,4 +119,16 @@ const getBalance = (payload) => (dispatch) => {
   }
 }
 
-export { userBet, authUser, getUserInfo, logoutUser, getBalance, allHistory, allTasks, guestsInfo, guestsTasks }
+export {
+  userBet,
+  authUser,
+  getUserInfo,
+  logoutUser,
+  getBalance,
+  gameHistory,
+  paymentsHistory,
+  allTasks,
+  guestsInfo,
+  guestsTasks,
+  guestsHistory,
+}
