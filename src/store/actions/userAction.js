@@ -1,38 +1,68 @@
 const userBet = (bet) => (dispatch) => {
-  const data = {
-    type: 'USER_BET',
-    payload: { bet },
-  }
+  try {
+    const data = {
+      type: 'USER_BET',
+      payload: { bet },
+    }
 
-  return dispatch(data)
+    return dispatch(data)
+  } catch (error) {
+    console.log
+  }
+}
+
+const withdrawal = ({ response, status }) => (dispatch) => {
+  try {
+    // if (status === 'success') {
+    //   const data = {
+    //     type: 'WITHDRAWAL',
+    //     payload: response,
+    //   }
+    //   return dispatch(data)
+    // }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const guestsInfo = (payload) => (dispatch) => {
-  const { id, name, picture } = payload
-  const data = {
-    type: 'GUESTS_USER_INFO',
-    payload: { id, name, picture },
-  }
+  try {
+    const { id, name, picture } = payload
+    const data = {
+      type: 'GUESTS_USER_INFO',
+      payload: { id, name, picture },
+    }
 
-  dispatch(data)
+    dispatch(data)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const guestsTasks = (payload) => (dispatch) => {
-  const data = {
-    type: 'GUESTS_USER_TASKS',
-    payload,
-  }
+  try {
+    const data = {
+      type: 'GUESTS_USER_TASKS',
+      payload,
+    }
 
-  dispatch(data)
+    dispatch(data)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const guestsHistory = (payload) => (dispatch) => {
-  const data = {
-    type: 'GUESTS_USER_HISTORY',
-    payload,
-  }
+  try {
+    const data = {
+      type: 'GUESTS_USER_HISTORY',
+      payload,
+    }
 
-  dispatch(data)
+    dispatch(data)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const gameHistory = (payload) => (dispatch) => {
@@ -131,4 +161,5 @@ export {
   guestsInfo,
   guestsTasks,
   guestsHistory,
+  withdrawal,
 }

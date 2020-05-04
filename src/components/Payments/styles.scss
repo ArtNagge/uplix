@@ -29,6 +29,38 @@
       align-items: center;
       justify-content: flex-start;
 
+      &_payments_list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin-top: 60px;
+
+        h4 {
+          margin-bottom: 36px;
+          font-size: 20px;
+          font-weight: 500;
+          color: $default_white;
+          text-align: center;
+        }
+
+        &_container {
+          width: 780px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        }
+
+        &_icon {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
       &_payments {
         display: flex;
         width: 100%;
@@ -36,12 +68,69 @@
         align-items: center;
         justify-content: flex-start;
 
+        &_number {
+          background-color: $gray_02;
+          color: $gray_06;
+          border: none;
+          font-size: 16px;
+          text-align: center;
+          box-sizing: border-box;
+          padding: 12px 20px;
+          font-weight: 400;
+          margin-top: 40px;
+          border-radius: 10px;
+          width: 333px;
+        }
+
         &_methods {
           width: 980px;
           display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
+        }
+
+        &_count {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+          background-color: $gray_02;
+          border-radius: 10px;
+          overflow: hidden;
+          margin-top: 40px;
+          width: 333px;
+
+          input {
+            background-color: transparent;
+            color: $gray_06;
+            border: none;
+            font-size: 16px;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 0 20px;
+            font-weight: 400;
+          }
+
+          button {
+            height: 100%;
+            color: $default_white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $purple_01;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 400;
+            padding: 12px 30px;
+            border-radius: 10px;
+            transition: 0.2s ease;
+
+            &:hover {
+              background-color: $purple_01_hover;
+            }
+          }
         }
       }
     }
@@ -55,6 +144,31 @@
             width: 100%;
             padding: 0 10px;
             box-sizing: border-box;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+          }
+          &_number {
+            width: 310px;
+          }
+          &_count {
+            width: 310px;
+
+            button {
+              padding: 12px 19px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoints('768') {
+    &_content {
+      &_user {
+        &_payments_list {
+          &_container {
+            width: 100%;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;

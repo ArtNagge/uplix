@@ -13,7 +13,7 @@ import clearMethod from '../../utils/clearMethod'
 import AvatarElips from '../AvatarElips/AvatarElips'
 import s from './styles.scss'
 
-const Sidebar = ({ user, logoutUser, ws, activeMenu, onClick }) => {
+const Sidebar = ({ user, ws, activeMenu, onClick, handleModal }) => {
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
 
   const clickAuth = async () =>
@@ -29,7 +29,7 @@ const Sidebar = ({ user, logoutUser, ws, activeMenu, onClick }) => {
             <div className={s.sidebar_userPanel_controls}>
               <div className={s.sidebar_userPanel_controlsInfo}>
                 <Link to="/profile">{formatFN(name)}</Link>
-                <button onClick={() => logoutUser()}>
+                <button onClick={() => handleModal('exit')}>
                   <SvgIcon icon="logout" classes={s.sidebar_userPanel_controlsInfo_icon} />
                 </button>
               </div>
@@ -37,7 +37,7 @@ const Sidebar = ({ user, logoutUser, ws, activeMenu, onClick }) => {
                 <div className={s.sidebar_userPanel_controlsBalance_container}>
                   <SvgIcon classes={s.sidebar_userPanel_controlsBalance_container_icon} icon="gem" />
                   <span className={s.sidebar_userPanel_controlsBalance_balance}>{balance}</span>
-                  <button className={s.sidebar_userPanel_controlsBalance_add}>
+                  <button className={s.sidebar_userPanel_controlsBalance_add} onClick={() => handleModal('balance')}>
                     <SvgIcon icon="plus" classes={s.sidebar_userPanel_controlsBalance_add_icon} />
                   </button>
                 </div>
@@ -90,6 +90,16 @@ const Sidebar = ({ user, logoutUser, ws, activeMenu, onClick }) => {
           >
             <SvgIcon classes={s.sidebar_menu_icon} icon="jackpot" />
             {checkLang(lang, 'game.jackpot')}
+          </NavLink>
+          <NavLink
+            onClick={onClick}
+            className={s.sidebar_menu_link}
+            activeClassName={s.sidebar_menu_link_active}
+            to="/"
+            exact
+          >
+            <SvgIcon classes={s.sidebar_menu_icon} icon="classic" />
+            {checkLang(lang, 'game.classic')}
           </NavLink>
           <NavLink
             onClick={onClick}

@@ -29,7 +29,7 @@ const Profile = ({ guestId }) => {
       gHist,
     })
   )
-  const { id, name, picture } = user
+  const { id, name, picture, income, invited } = user
 
   const hist = guestId ? gHist : history
 
@@ -42,30 +42,28 @@ const Profile = ({ guestId }) => {
       </div>
       {!guestId && (
         <div className={s.profile_content_user_main}>
-          <MiniBlockInfo icon="ruble" title={checkLang(lang, 'ref.earned')} description="35460" />
+          <MiniBlockInfo icon="ruble" title={checkLang(lang, 'ref.earned')} description={income} />
           <MiniBlockInfo
             icon="copy"
             title={checkLang(lang, 'ref.link')}
-            description="uplix.com/partner/454960"
+            description={`uplix.com/partner/${id}`}
             width={300}
             copy
           />
-          <MiniBlockInfo icon="invitee" title={checkLang(lang, 'ref.invited')} description="3542" />
+          <MiniBlockInfo icon="invitee" title={checkLang(lang, 'ref.invited')} description={invited} />
         </div>
       )}
       <div className={cn(s.profile_content_user_history_games, guestId && s.mt40)}>
         <h4>{checkLang(lang, 'game.history')}</h4>
         <div className={s.profile_content_user_history_games_container}>
-          {hist.length > 0
-            ? hist.map((h, index) => (
-                <HistoryProfile
-                  key={index}
-                  date={dayjs(h.time * 1000).format('DD.MM.YY в HH:mm')}
-                  classes={s.profile_content_user_history_games_icon}
-                  event={h.value}
-                />
-              ))
-            : null}
+          {hist.map((h, index) => (
+            <HistoryProfile
+              key={index}
+              date={dayjs(h.time * 1000).format('DD.MM.YY в HH:mm')}
+              classes={s.profile_content_user_history_games_icon}
+              event={h.value}
+            />
+          ))}
         </div>
       </div>
     </div>

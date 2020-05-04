@@ -11,6 +11,7 @@ import { connectCounter } from '../../store/actions/socket'
 import { appLoad } from '../../store/actions/appAction'
 
 import s from './styles.scss'
+import Promo from '../../components/Promo'
 
 const ProfilePage = ({
   match: {
@@ -100,7 +101,7 @@ const ProfilePage = ({
       case 'payments':
         return <Payments />
       case 'promo':
-        return 'promo'
+        return <Promo />
       default:
         return null
     }

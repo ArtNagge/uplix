@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
 import { routs } from '../../utils/config'
@@ -16,6 +17,7 @@ import {
   allTasks,
   guestsInfo,
   guestsTasks,
+  withdrawal,
 } from '../../store/actions/userAction'
 import { initChat, chat, timerInit } from '../../store/actions/chatAction'
 import { getJackpot, makeBet, clientServerDiff } from '../../store/actions/jackpotAction'
@@ -34,6 +36,7 @@ import HeaderMobile from '../../components/HeaderMobile'
 import ErrorBoundary from '../../components/ErrorBoundary'
 
 import Loader from '../../components/Loader'
+import Modal from '../../components/Modal'
 
 class App extends PureComponent {
   state = {
@@ -43,6 +46,11 @@ class App extends PureComponent {
     tPing: 0,
     activeChat: false,
     activeMenu: false,
+    modals: {
+      balance: false,
+      exit: false,
+    },
+    deposit: null,
   }
 
   ws = new ReconnectingWebSocket('wss://uptest.work:2087/', null, { debug: false, reconnectInterval: 2000 })
@@ -68,6 +76,7 @@ class App extends PureComponent {
       appLoad,
       guestsInfo,
       guestsTasks,
+      withdrawal,
     } = this.props
 
     const lang_hash = localStorage.getItem('lang_hash')
@@ -96,6 +105,12 @@ class App extends PureComponent {
       switch (info.seq || info.channel) {
         case 'tasksPickUp': {
           // TODO: pick up
+          break
+        }
+        case 'withdrawal': {
+          // TODO: channels
+          toast(info.response)
+          withdrawal(info)
           break
         }
         case 'tasksGetId': {
@@ -170,7 +185,7 @@ class App extends PureComponent {
         case 'getUser': {
           if (!lang_hash || info.response.lang_hash !== lang_hash) {
             sendSocket(this.ws, 3, { method: 'language.getResource' }, 'languageSources')
-            localStorage.setItem('lang_hash', info.lang_hash)
+            localStorage.setItem('lang_hash', info.response.lang_hash)
           } else {
             getStorageResourse(JSON.parse(lang_source))
           }
@@ -187,10 +202,6 @@ class App extends PureComponent {
         }
         case 'balance': {
           getBalance(info.message)
-          break
-        }
-        case 'chatSend': {
-          toast(info.response)
           break
         }
         case 'wheelGet': {
@@ -230,9 +241,36 @@ class App extends PureComponent {
     this.setState({ activeMenu: false })
   }
 
+  handleModal = (current) => {
+    this.setState((state) => ({
+      modals: {
+        ...state.modals,
+        [current]: !state.modals[current],
+      },
+    }))
+  }
+
+  handleDeposit = (evt) => {
+    this.setState({ deposit: evt.target.value.replace(/\D/, '') })
+  }
+
   render() {
-    const { activeMenu, activeChat } = this.state
+    const {
+      activeMenu,
+      activeChat,
+      modals: { balance, exit },
+      deposit,
+    } = this.state
     const { online, messages, user, logoutUser } = this.props
+    const Input = (
+      <input
+        className={s.depositInput}
+        type="text"
+        onChange={this.handleDeposit}
+        value={deposit || ''}
+        placeholder="Ведите кол-во гемов"
+      />
+    )
 
     return (
       <Router>
@@ -243,7 +281,7 @@ class App extends PureComponent {
               activeMenu={activeMenu}
               ws={this.ws}
               user={user}
-              logoutUser={() => logoutUser()}
+              handleModal={this.handleModal}
             />
             <div className={s.content}>
               <Notifications />
@@ -254,7 +292,7 @@ class App extends PureComponent {
                       handleInvisible={this.handleInvisible}
                       activeMenu={activeMenu}
                       activeChat={activeChat}
-                      logoutUser={() => logoutUser()}
+                      handleModal={this.handleModal}
                     />
                   ) : null
                 }
@@ -269,6 +307,31 @@ class App extends PureComponent {
             </div>
             <Chat activeChat={activeChat} online={online} ws={this.ws} user={user} messages={messages} />
           </div>
+          {ReactDOM.createPortal(
+            <>
+              <Modal
+                header="Пополнение баланса"
+                successButton="Продолжить"
+                current="balance"
+                active={balance}
+                moreElements={Input}
+                handleSuccess={() => alert('нахуй пошел')}
+                mainHeader="Сумма пополнения"
+                description={'*Пополнение баланса осуществляется\nавтоматически. По всем вопросам - поддержка'}
+                handleVisible={this.handleModal}
+              />
+              <Modal
+                header="Выход"
+                successButton="Выход"
+                current="exit"
+                active={exit}
+                handleSuccess={() => logoutUser()}
+                mainHeader="Вы точно хотите выйти?"
+                handleVisible={this.handleModal}
+              />
+            </>,
+            document.getElementById('modals')
+          )}
         </Loader>
       </Router>
     )
@@ -300,4 +363,5 @@ export default connect(mapStateToProps, {
   appLoad,
   guestsInfo,
   guestsTasks,
+  withdrawal,
 })(App)

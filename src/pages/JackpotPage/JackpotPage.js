@@ -43,14 +43,14 @@ class JackpotPage extends PureComponent {
   handleBet = (evt) => {
     const { value } = evt.target
     const target = this.betRef.current
-    const res = String(Number(value.replace(/\D/, '')))
+    const res = String(value.replace(/\D/, ''))
     target.size = (!res.length && 1) || (res.length >= 5 && 5) || res.length
     this.setState({ bet: res })
   }
 
   handleBetAndSizeInput = (result) => {
     const target = this.betRef.current
-    const res = String(Number(result))
+    const res = String(result)
     target.size = (!res.length && 1) || (res.length >= 5 && 5) || res.length
     this.setState({ bet: res })
   }

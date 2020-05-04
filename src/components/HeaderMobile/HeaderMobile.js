@@ -10,7 +10,7 @@ import AvatarElips from '../AvatarElips'
 
 import s from './styles.scss'
 
-const HeaderMobile = ({ handleInvisible, activeMenu, activeChat, logoutUser }) => {
+const HeaderMobile = ({ handleInvisible, activeMenu, activeChat, handleModal }) => {
   const { user, lang, ws } = useSelector(({ user: { user }, lang: { data: lang }, socket: { ws } }) => ({
     user,
     lang,
@@ -41,7 +41,7 @@ const HeaderMobile = ({ handleInvisible, activeMenu, activeChat, logoutUser }) =
               <div className={s.header_sub_balance_container}>
                 <SvgIcon classes={s.header_sub_balance_container_icon} icon="gem" />
                 <span className={s.header_sub_balance_container_balance}>{balance}</span>
-                <button className={s.header_sub_balance_container_add}>
+                <button className={s.header_sub_balance_container_add} onClick={() => handleModal('balance')}>
                   <SvgIcon icon="plus" classes={s.header_sub_balance_container_add_icon} />
                 </button>
               </div>
@@ -51,7 +51,7 @@ const HeaderMobile = ({ handleInvisible, activeMenu, activeChat, logoutUser }) =
                 <span>{formatFN(name)}</span>
                 {AvatarElips(picture, 25, 25, true)}
               </Link>
-              <button onClick={() => logoutUser()}>
+              <button onClick={() => handleModal('exit')}>
                 <SvgIcon icon="logout" classes={s.header_sub_user_icon} />
               </button>
             </div>

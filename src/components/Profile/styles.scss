@@ -45,8 +45,7 @@
         }
 
         &_container {
-          width: 100%;
-          padding: 0 15px;
+          width: 780px;
           box-sizing: border-box;
           display: flex;
           flex-direction: row;
@@ -121,6 +120,7 @@
       &_user {
         &_history_games {
           &_container {
+            width: 100%;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
