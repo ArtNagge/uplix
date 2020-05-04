@@ -23,7 +23,7 @@ class AuthPage extends PureComponent {
       const url = new URL(window.location.href)
       const requestCode = url.search.split('=')[1]
       const auth_data = { code: requestCode }
-      sendSocket(ws, 3, { method: 'auth.init', parameters: { social: 'vkontakte', auth_data, dev: 1 } }, 'authData')
+      sendSocket(ws, 3, { method: 'auth.init', parameters: { social: 'vkontakte', auth_data } }, 'authData')
       connectCounter(0)
     }
 
