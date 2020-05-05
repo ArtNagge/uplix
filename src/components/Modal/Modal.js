@@ -14,8 +14,16 @@ class Modal extends Component {
   }
 
   render() {
-    const { active, header, successButton, description, mainHeader, handleSuccess, moreElements } = this.props
-    console.log(active)
+    const {
+      active,
+      header,
+      cancelButton,
+      successButton,
+      description,
+      mainHeader,
+      handleSuccess,
+      moreElements,
+    } = this.props
     return (
       <div className={cn(s.modal, active && s.modal_active)} onClick={this.handleVisibleModal}>
         <div className={s.modal_wrapper} data-cancel>
@@ -33,7 +41,7 @@ class Modal extends Component {
             )}
             <div className={s.modal_content_buttons}>
               <button className={s.modal_content_cancel} data-cancel>
-                Отменить
+                {cancelButton}
               </button>
               <button className={s.modal_content_success} onClick={handleSuccess} data-cancel>
                 {successButton}

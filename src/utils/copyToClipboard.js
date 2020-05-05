@@ -17,7 +17,7 @@ const copyToClipboard = (text) => {
     document.execCommand('copy')
     document.body.removeChild(textArea)
   }
-  toast(checkLang(lang, 'ref.copied'))
+  toast(checkLang(lang, 'invites.copied'), { toastId: 5 })
 }
 
 export default copyToClipboard

@@ -42,19 +42,19 @@ const Profile = ({ guestId }) => {
       </div>
       {!guestId && (
         <div className={s.profile_content_user_main}>
-          <MiniBlockInfo icon="ruble" title={checkLang(lang, 'ref.earned')} description={income} />
+          <MiniBlockInfo icon="ruble" title={checkLang(lang, 'invites.earned')} description={income} />
           <MiniBlockInfo
             icon="copy"
-            title={checkLang(lang, 'ref.link')}
+            title={checkLang(lang, 'invites.link')}
             description={`uplix.com/partner/${id}`}
             width={300}
             copy
           />
-          <MiniBlockInfo icon="invitee" title={checkLang(lang, 'ref.invited')} description={invited} />
+          <MiniBlockInfo icon="invitee" title={checkLang(lang, 'invites.invited')} description={invited} />
         </div>
       )}
       <div className={cn(s.profile_content_user_history_games, guestId && s.mt40)}>
-        <h4>{checkLang(lang, 'game.history')}</h4>
+        <h4>{checkLang(lang, 'history')}</h4>
         <div className={s.profile_content_user_history_games_container}>
           {hist.map((h, index) => (
             <HistoryProfile

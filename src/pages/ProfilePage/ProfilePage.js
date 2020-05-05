@@ -67,15 +67,15 @@ const ProfilePage = ({
           value: 'profile',
         },
         {
-          name: checkLang(lang, 'tasks'),
+          name: checkLang(lang, 'tasks.name'),
           value: 'tasks',
         },
         {
-          name: checkLang(lang, 'payments'),
+          name: checkLang(lang, 'payments.name'),
           value: 'payments',
         },
         {
-          name: checkLang(lang, 'promocodes'),
+          name: checkLang(lang, 'promocodes.name'),
           value: 'promo',
         },
       ]
@@ -85,7 +85,7 @@ const ProfilePage = ({
           value: 'profile',
         },
         {
-          name: checkLang(lang, 'tasks'),
+          name: checkLang(lang, 'tasks.name'),
           value: 'tasks',
         },
       ]

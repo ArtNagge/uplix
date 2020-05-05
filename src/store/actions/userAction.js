@@ -7,7 +7,7 @@ const userBet = (bet) => (dispatch) => {
 
     return dispatch(data)
   } catch (error) {
-    console.log
+    console.log(error)
   }
 }
 
@@ -104,11 +104,9 @@ const allTasks = (payload) => (dispatch) => {
 const authUser = ({ response, status }) => (dispatch) => {
   try {
     if (status === 'success') {
-      const { access_token, user } = response
-
       const data = {
         type: 'USER_AUTH_SUCCESS',
-        payload: { access_token, user },
+        payload: response,
       }
       dispatch(data)
     }

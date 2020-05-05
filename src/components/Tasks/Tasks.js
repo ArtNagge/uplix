@@ -38,14 +38,10 @@ const Paymetns = ({ guestId }) => {
             <div className={s.profile_content_user_tasks_info}>
               <MiniBlockInfo width={200} title={checkLang(lang, 'time.left')} description="13:20:20" />
             </div>
-            <div className={s.profile_content_user_tasks_list}>
-              <TaskItem event="Сыграть в режим “Классик” 5 раз" prize={50} progress={{ current: 1, purpose: 5 }} />
-              <TaskItem event="Сыграть в режим “Классик” 5 раз" prize={150} progress={{ current: 19, purpose: 20 }} />
-              <TaskItem event="Сыграть в режим “Классик” 5 раз" prize={240} progress={{ current: 123, purpose: 150 }} />
-            </div>
+            <div className={s.profile_content_user_tasks_list}></div>
           </>
         )}
-        <h3>{checkLang(lang, 'all.tasks')}</h3>
+        <h3>{checkLang(lang, 'tasks.all')}</h3>
         <div className={s.profile_content_user_tasks_list}>
           {Object.keys(guestId ? gTasks : tasks).map((task, index) => {
             const { lang_key, current_progress: current, end_progress: purpose, amount, can_activate } = guestId

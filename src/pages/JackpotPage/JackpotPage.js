@@ -104,8 +104,8 @@ class JackpotPage extends PureComponent {
           </div>
           <div className={s.jackpot_bet_container}>
             <div className={s.jackpot_bet_container_header}>
-              <div className={s.jackpot_bet_name}>{checkLang(lang, 'join.players')}</div>
-              <div className={s.jackpot_bet_amount}>{checkLang(lang, 'game.bets')}</div>
+              <div className={s.jackpot_bet_name}>{checkLang(lang, 'player')}</div>
+              <div className={s.jackpot_bet_amount}>{checkLang(lang, 'games.bet')}</div>
             </div>
             <div className={s.jackpot_bet_container_content}>
               {pink
@@ -131,8 +131,8 @@ class JackpotPage extends PureComponent {
           </div>
           <div className={s.jackpot_bet_container}>
             <div className={s.jackpot_bet_container_header}>
-              <div className={s.jackpot_bet_name}>{checkLang(lang, 'join.players')}</div>
-              <div className={s.jackpot_bet_amount}>{checkLang(lang, 'game.bets')}</div>
+              <div className={s.jackpot_bet_name}>{checkLang(lang, 'player')}</div>
+              <div className={s.jackpot_bet_amount}>{checkLang(lang, 'games.bet')}</div>
             </div>
             <div className={s.jackpot_bet_container_content}>
               {purple
@@ -165,7 +165,7 @@ class JackpotPage extends PureComponent {
             onClick={() => this.makeBet('PINK')}
             className={cn(s.jackpot_control_bet, s.jackpot_control_bet_pink)}
           >
-            <span>{checkLang(lang, 'place.bet')}</span>
+            <span>{checkLang(lang, 'games.make_bet')}</span>
           </button>
           <div className={s.jackpot_control_amount_field}>
             <input ref={this.betRef} type="text" size="1" value={bet} placeholder={0} onChange={this.handleBet} />
@@ -174,7 +174,7 @@ class JackpotPage extends PureComponent {
             onClick={() => this.makeBet('PURPLE')}
             className={cn(s.jackpot_control_bet, s.jackpot_control_bet_purple)}
           >
-            <span>{checkLang(lang, 'place.bet')}</span>
+            <span>{checkLang(lang, 'games.make_bet')}</span>
           </button>
         </div>
         <div className={s.jackpot_control_panel}>
@@ -200,7 +200,7 @@ class JackpotPage extends PureComponent {
             <span>x2</span>
           </button>
           <button onClick={() => this.handleAddBalance('MAX')}>
-            <span>{checkLang(lang, 'max.bet')}</span>
+            <span>{checkLang(lang, 'games.max')}</span>
           </button>
         </div>
       </div>
@@ -236,7 +236,7 @@ class JackpotPage extends PureComponent {
                     </div>
                     <div className={s.jackpot_rightBlock_top}>
                       <div className={cn(s.header_top, s.header_right)}>
-                        <span>{checkLang(lang, 'day.top')}</span>
+                        <span>{checkLang(lang, 'games.day_top')}</span>
                       </div>
                       <div className={s.content}>
                         <div className={s.jackpot_top_avatar}>
@@ -256,7 +256,7 @@ class JackpotPage extends PureComponent {
                   <div className={s.jackpot_rightBlock}>
                     <div className={s.jackpot_rightBlock_bottom}>
                       <div className={cn(s.header_bottom, s.header_right, s.header_purple)}>
-                        <span>{checkLang(lang, 'game.total')}</span>
+                        <span>{checkLang(lang, 'games.total')}</span>
                       </div>
                       <div className={s.content}>
                         <div className={s.content_users}>
@@ -302,7 +302,7 @@ class JackpotPage extends PureComponent {
                     </div>
                     <div className={s.jackpot_leftBlock_bottom}>
                       <div className={cn(s.header_bottom, s.header_left, s.header_pink)}>
-                        <span>{checkLang(lang, 'game.total')}</span>
+                        <span>{checkLang(lang, 'games.total')}</span>
                       </div>
                       <div className={s.content}>
                         <div className={s.content_users}>
@@ -320,7 +320,7 @@ class JackpotPage extends PureComponent {
                   <div className={s.jackpot_rightBlock}>
                     <div className={s.jackpot_rightBlock_top}>
                       <div className={cn(s.header_top, s.header_right)}>
-                        <span>{checkLang(lang, 'day.top')}</span>
+                        <span>{checkLang(lang, 'games.day_top')}</span>
                       </div>
                       <div className={s.content}>
                         <div className={s.jackpot_top_avatar}>
@@ -338,7 +338,7 @@ class JackpotPage extends PureComponent {
                     </div>
                     <div className={s.jackpot_rightBlock_bottom}>
                       <div className={cn(s.header_bottom, s.header_right, s.header_purple)}>
-                        <span>{checkLang(lang, 'game.total')}</span>
+                        <span>{checkLang(lang, 'games.total')}</span>
                       </div>
                       <div className={s.content}>
                         <div className={s.content_users}>

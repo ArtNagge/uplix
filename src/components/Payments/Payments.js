@@ -22,15 +22,15 @@ const Paymetns = () => {
 
   const methods = [
     {
-      name: checkLang(lang, 'payments.qiwi'),
+      name: checkLang(lang, 'payments.wallets.qiwi'),
       value: 'qiwi',
     },
     {
-      name: checkLang(lang, 'payments.yandex'),
+      name: checkLang(lang, 'payments.wallets.yandex'),
       value: 'ym',
     },
     {
-      name: checkLang(lang, 'payments.card'),
+      name: checkLang(lang, 'payments.wallets.card'),
       value: 'card',
     },
   ]
@@ -66,6 +66,16 @@ const Paymetns = () => {
     }
   }
 
+  const selectPlaceholder = () => {
+    switch (method) {
+      case 'card': {
+        return checkLang(lang, 'payments.card_number')
+      }
+      default:
+        return checkLang(lang, 'payments.wallet_number')
+    }
+  }
+
   const handleClick = (evt) => {
     evt.preventDefault()
 
@@ -81,7 +91,7 @@ const Paymetns = () => {
   return (
     <div className={s.profile_content_user}>
       <div className={s.profile_content_user_payments}>
-        <h3>{checkLang(lang, 'withdraw')}</h3>
+        <h3>{checkLang(lang, 'payments.withdrawal_title')}</h3>
         <div className={s.profile_content_user_payments_methods}>
           {methods.map((m, index) => (
             <PaymentMethod onClick={handleMethod} key={index} info={m} active={method} />
@@ -89,7 +99,7 @@ const Paymetns = () => {
         </div>
         <InputMask
           className={s.profile_content_user_payments_number}
-          placeholder={checkLang(lang, 'input.number')}
+          placeholder={selectPlaceholder()}
           type="text"
           onChange={handleWallet}
           value={wallet}
@@ -97,8 +107,13 @@ const Paymetns = () => {
           maskChar="_"
         />
         <div className={s.profile_content_user_payments_count}>
-          <input placeholder={checkLang(lang, 'input.amount')} type="text" onChange={handleCount} value={count} />
-          <button onClick={handleClick}>{checkLang(lang, 'receive.money')}</button>
+          <input
+            placeholder={checkLang(lang, 'payments.input_amount')}
+            type="text"
+            onChange={handleCount}
+            value={count}
+          />
+          <button onClick={handleClick}>{checkLang(lang, 'payments.withdrawal')}</button>
         </div>
         <div className={s.profile_content_user_payments_list}>
           <h4>{checkLang(lang, 'payments.history')}</h4>

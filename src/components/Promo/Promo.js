@@ -15,7 +15,7 @@ const Promo = () => {
   const [promo, setPromo] = useState('')
 
   const pickUp = () => {
-    console.log(promo)
+    console.log(promo, 'TODO PROMO')
     // sendSocket(ws, 3, { method: 'tasks.ID', parameters: { task } }, 'tasksPickUp')
   }
 
@@ -26,31 +26,31 @@ const Promo = () => {
   return (
     <div className={s.profile_content_user}>
       <div className={s.profile_content_user_promo}>
-        <h3>{checkLang(lang, 'bonuses')}</h3>
+        <h3>{checkLang(lang, 'promocodes.name')}</h3>
         <div className={s.profile_content_user_promo_panel}>
           <div className={s.profile_content_user_promo_panel_spec}>
             <SvgIcon icon="logo" classes={s.profile_content_user_promo_panel_spec_logo} />
-            <h1>{checkLang(lang, 'promocode.special')}</h1>
-            <p dangerouslySetInnerHTML={{ __html: clearMethod(checkLang(lang, 'offer.info')) }} />
+            <h1>{checkLang(lang, 'promocodes.special')}</h1>
+            <p dangerouslySetInnerHTML={{ __html: clearMethod(checkLang(lang, 'promocodes.info')) }} />
             <div className={s.profile_content_user_promo_panel_spec_info}>
               <span>
-                {checkLang(lang, 'promocode.week')} <b>HAPPY2020</b>
+                {checkLang(lang, 'promocodes.week')} <b>HAPPY2020</b>
               </span>
               <span>
-                {checkLang(lang, 'promocode.bonus')} <b>2020</b>
+                {checkLang(lang, 'promocodes.bonus')} <b>2020</b>
               </span>
             </div>
           </div>
           <div className={s.profile_content_user_promo_panel_get}>
             <span className={s.profile_content_user_promo_panel_get_heading}>
-              {checkLang(lang, 'promocode.activation')}
+              {checkLang(lang, 'promocodes.activate')}
             </span>
             <input type="text" onChange={handlePromo} placeholder="PROMO" value={promo} />
-            <button onClick={pickUp}>{checkLang(lang, 'activation')}</button>
+            <button onClick={pickUp}>{checkLang(lang, 'promocodes.activate')}</button>
           </div>
         </div>
         <div className={s.profile_content_user_promo_list}>
-          <h4>{checkLang(lang, 'activation.history')}</h4>
+          <h4>{checkLang(lang, 'promocodes.history')}</h4>
           <div className={s.profile_content_user_promo_list_container}>
             {payments.map((h, index) => (
               <HistoryProfile

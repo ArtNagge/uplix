@@ -98,7 +98,7 @@
           background-color: $gray_02;
           border-radius: 10px;
           overflow: hidden;
-          margin-top: 40px;
+          margin-top: 20px;
           width: 333px;
 
           input {
@@ -108,7 +108,7 @@
             font-size: 16px;
             text-align: center;
             box-sizing: border-box;
-            padding: 0 20px;
+            flex: 1;
             font-weight: 400;
           }
 

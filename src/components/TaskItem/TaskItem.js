@@ -24,7 +24,7 @@ const HistoryProfile = ({ event, prize, progress, can_activate, onClick, guestId
         <div className={s.task_control}>
           <div className={s.task_control_prize}>
             <span>
-              {checkLang(lang, 'prize')} {prize}
+              {checkLang(lang, 'games.prize')} {prize}
             </span>
             <SvgIcon icon="gem" classes={s.task_control_prize_icon} />
           </div>

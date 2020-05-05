@@ -1,1 +1,1 @@
-export default (text) => text.replace('\n', '<br />')
+export default (text) => (text && typeof text === 'string' ? text.replace('\n', '<br />') : '')

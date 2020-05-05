@@ -5,6 +5,8 @@ const user = {
     social: undefined,
     social_id: null,
     name: '',
+    income: 0,
+    invited: 0,
     picture: '',
     balance: 0,
   },
@@ -52,16 +54,10 @@ export default function (state = user, action) {
     }
 
     case 'USER_AUTH_SUCCESS': {
-      const { access_token, user } = action.payload
-      localStorage.setItem('access_token', access_token)
-      localStorage.setItem('lang_hash', user.lang_hash)
+      localStorage.setItem('access_token', action.payload)
       return {
         ...state,
-        user: {
-          auth: true,
-          ...user,
-        },
-        access_token,
+        access_token: action.payload,
       }
     }
 

@@ -40,7 +40,6 @@ const Jackpot = ({ percent, result, total, start, time }) => {
         const serverDiff = dayjs().valueOf() + diff
         const difference = 20 - parseInt((serverDiff - dayjs(time * 1000).valueOf()) / 1000)
         const count = difference <= 0 ? 0 : difference
-        console.log(serverDiff - dayjs(time * 1000).valueOf())
         setTime(count)
       }, 1000)
     }
@@ -98,7 +97,7 @@ const Jackpot = ({ percent, result, total, start, time }) => {
       <div className={s.jackpot_game_info}>
         {timerBlock()}
         <div className={s.jackpot_game_info_bank}>
-          {checkLang(lang, 'game.bank')}
+          {checkLang(lang, 'games.bank')}
           <div className={s.jackpot_game_info_bank_total}>
             {total}
             <SvgIcon classes={s.jackpot_game_info_bank_total_icon} icon="gem" />

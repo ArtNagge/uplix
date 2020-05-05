@@ -7,6 +7,7 @@ import s from './styles.scss'
 import SvgIcon from '../SvgIcon/SvgIcon'
 import { ChatMessages } from './ChatMessages'
 import clearMethod from '../../utils/clearMethod'
+import checkLang from '../../utils/checkLang'
 
 class Chat extends PureComponent {
   state = {
@@ -14,10 +15,11 @@ class Chat extends PureComponent {
   }
 
   get header() {
-    const { online } = this.props
+    const { online, lang } = this.props
+
     return (
       <div className={s.chat_header}>
-        <span className={s.chat_header_heading}>Онлайн чат</span>
+        <span className={s.chat_header_heading}>{checkLang(lang, 'chat.name')}</span>
         <span className={s.chat_header_online}>{online}</span>
       </div>
     )
@@ -58,7 +60,7 @@ class Chat extends PureComponent {
           <textarea
             type="text"
             value={chat}
-            placeholder={lang && lang['chat.area']}
+            placeholder={checkLang(lang, 'chat.area')}
             onChange={this.handleInput}
             onKeyDown={this.keyDown}
           ></textarea>
@@ -70,7 +72,7 @@ class Chat extends PureComponent {
     ) : (
       <div className={s.chat_form}>
         <div className={s.chat_form_dontAuth}>
-          <span dangerouslySetInnerHTML={{ __html: lang && clearMethod(lang['chat.authorization_required']) }} />
+          <span dangerouslySetInnerHTML={{ __html: clearMethod(checkLang(lang, 'chat.authorization_required')) }} />
         </div>
       </div>
     )

@@ -1,8 +1,9 @@
-const getLeaderboard = () => (dispatch) => {
+const getLeaderboard = (payload) => (dispatch) => {
+  console.log(payload)
   try {
     const data = {
       type: 'LEADERBOARD',
-      payload: {},
+      payload,
     }
     return dispatch(data)
   } catch (error) {

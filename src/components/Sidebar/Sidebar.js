@@ -17,7 +17,7 @@ const Sidebar = ({ user, ws, activeMenu, onClick, handleModal }) => {
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
 
   const clickAuth = async () =>
-    await sendSocket(ws, 3, { method: 'auth.getAuthUri', parameters: { social: 'vkontakte' } }, 'auth')
+    await sendSocket(ws, 3, { method: 'auth.getAuthUri', parameters: { social: 'vkontakte', dev: 1 } }, 'auth')
 
   const userPanel = () => {
     const { auth, name, balance, picture } = user.user
@@ -89,7 +89,7 @@ const Sidebar = ({ user, ws, activeMenu, onClick, handleModal }) => {
             exact
           >
             <SvgIcon classes={s.sidebar_menu_icon} icon="jackpot" />
-            {checkLang(lang, 'game.jackpot')}
+            {checkLang(lang, 'games.wheel.name')}
           </NavLink>
           <NavLink
             onClick={onClick}
@@ -99,7 +99,7 @@ const Sidebar = ({ user, ws, activeMenu, onClick, handleModal }) => {
             exact
           >
             <SvgIcon classes={s.sidebar_menu_icon} icon="classic" />
-            {checkLang(lang, 'game.classic')}
+            {checkLang(lang, 'games.clones.name')}
           </NavLink>
           <NavLink
             onClick={onClick}
@@ -119,7 +119,7 @@ const Sidebar = ({ user, ws, activeMenu, onClick, handleModal }) => {
             exact
           >
             <SvgIcon classes={s.sidebar_menu_icon} icon="faq" />
-            {checkLang(lang, 'faq')}
+            {checkLang(lang, 'faq.name')}
           </NavLink>
         </nav>
         <div className={s.sidebar_lottery}>
@@ -128,7 +128,7 @@ const Sidebar = ({ user, ws, activeMenu, onClick, handleModal }) => {
             <img src={bag} alt="" />
           </div>
           <a onClick={onClick} className={s.sidebar_lottery_link} href="/" target="_blank" rel="noopener noreferrer">
-            {checkLang(lang, 'menu.bonus.button')}
+            {checkLang(lang, 'menu.button')}
           </a>
         </div>
         <nav className={s.sidebar_footer}>

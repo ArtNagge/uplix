@@ -22,6 +22,7 @@ import {
 import { initChat, chat, timerInit } from '../../store/actions/chatAction'
 import { getJackpot, makeBet, clientServerDiff } from '../../store/actions/jackpotAction'
 import { getLangResourse, getStorageResourse } from '../../store/actions/langAction'
+import { getLeaderboard } from '../../store/actions/leaderboardAction'
 import { socketConnect } from '../../store/actions/socket'
 import { appLoad } from '../../store/actions/appAction'
 import ReconnectingWebSocket from 'reconnecting-websocket'
@@ -37,6 +38,9 @@ import ErrorBoundary from '../../components/ErrorBoundary'
 
 import Loader from '../../components/Loader'
 import Modal from '../../components/Modal'
+import checkLangBrowser from '../../utils/checkLangBrowser'
+import checkLang from '../../utils/checkLang'
+import clearMethod from '../../utils/clearMethod'
 
 class App extends PureComponent {
   state = {
@@ -77,14 +81,16 @@ class App extends PureComponent {
       guestsInfo,
       guestsTasks,
       withdrawal,
+      getLeaderboard,
     } = this.props
 
     const lang_hash = localStorage.getItem('lang_hash')
     const lang_source = localStorage.getItem('lang_source')
-    const access_token = localStorage.getItem('access_token')
 
     this.ws.onopen = () => {
-      sendSocket(this.ws, 1, access_token || 1, 'getUser')
+      const access_token = localStorage.getItem('access_token')
+
+      sendSocket(this.ws, 1, [access_token || 1, checkLangBrowser()], 'getUser')
       this.setState(
         { tPing: dayjs().valueOf() },
         sendSocket(this.ws, 3, { method: 'utils.getServerTime' }, 'getServerTime')
@@ -107,9 +113,14 @@ class App extends PureComponent {
           // TODO: pick up
           break
         }
+        case 'leaderboard': {
+          getLeaderboard(info.response)
+          appLoad(false)
+          break
+        }
         case 'withdrawal': {
           // TODO: channels
-          toast(info.response)
+          toast(info.response, { toastId: 1 })
           withdrawal(info)
           break
         }
@@ -168,7 +179,7 @@ class App extends PureComponent {
         }
         case 'authData': {
           authUser(info)
-          sendSocket(this.ws, 1, info.response.access_token, 'getUser')
+          sendSocket(this.ws, 1, [info.response, checkLangBrowser()], 'getUser')
           break
         }
         case 'auth': {
@@ -183,6 +194,7 @@ class App extends PureComponent {
           break
         }
         case 'getUser': {
+          const access_token = localStorage.getItem('access_token')
           if (!lang_hash || info.response.lang_hash !== lang_hash) {
             sendSocket(this.ws, 3, { method: 'language.getResource' }, 'languageSources')
             localStorage.setItem('lang_hash', info.response.lang_hash)
@@ -197,7 +209,7 @@ class App extends PureComponent {
           break
         }
         case 'bet': {
-          toast(info.response)
+          toast(info.response, { toastId: 2 })
           break
         }
         case 'balance': {
@@ -261,14 +273,14 @@ class App extends PureComponent {
       modals: { balance, exit },
       deposit,
     } = this.state
-    const { online, messages, user, logoutUser } = this.props
+    const { online, messages, user, logoutUser, lang } = this.props
     const Input = (
       <input
         className={s.depositInput}
         type="text"
         onChange={this.handleDeposit}
         value={deposit || ''}
-        placeholder="Ведите кол-во гемов"
+        placeholder={checkLang(lang, 'payments.replenishment.input')}
       />
     )
 
@@ -310,23 +322,25 @@ class App extends PureComponent {
           {ReactDOM.createPortal(
             <>
               <Modal
-                header="Пополнение баланса"
-                successButton="Продолжить"
+                header={checkLang(lang, 'payments.replenishment.name')}
+                successButton={checkLang(lang, 'resume')}
                 current="balance"
                 active={balance}
                 moreElements={Input}
                 handleSuccess={() => alert('нахуй пошел')}
-                mainHeader="Сумма пополнения"
-                description={'*Пополнение баланса осуществляется\nавтоматически. По всем вопросам - поддержка'}
+                cancelButton={checkLang(lang, 'cancel')}
+                mainHeader={checkLang(lang, 'payments.replenishment.amount')}
+                description={checkLang(lang, 'payments.replenishment.desc')}
                 handleVisible={this.handleModal}
               />
               <Modal
-                header="Выход"
-                successButton="Выход"
+                header={checkLang(lang, 'exit.title')}
+                successButton={checkLang(lang, 'exit.title')}
+                cancelButton={checkLang(lang, 'cancel')}
                 current="exit"
                 active={exit}
                 handleSuccess={() => logoutUser()}
-                mainHeader="Вы точно хотите выйти?"
+                mainHeader={checkLang(lang, 'exit.ask')}
                 handleVisible={this.handleModal}
               />
             </>,
@@ -338,8 +352,8 @@ class App extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ chat: { messages, online }, user, socket: { ws } }) => {
-  return { messages, online, user, ws }
+const mapStateToProps = ({ lang: { data: lang }, chat: { messages, online }, user, socket: { ws } }) => {
+  return { messages, online, user, ws, lang }
 }
 
 export default connect(mapStateToProps, {
@@ -364,4 +378,5 @@ export default connect(mapStateToProps, {
   guestsInfo,
   guestsTasks,
   withdrawal,
+  getLeaderboard,
 })(App)
