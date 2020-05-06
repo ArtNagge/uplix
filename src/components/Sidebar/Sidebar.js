@@ -17,7 +17,7 @@ const Sidebar = ({ user, ws, activeMenu, onClick, handleModal }) => {
   const { lang } = useSelector(({ lang: { data: lang } }) => ({ lang }))
 
   const clickAuth = async () =>
-    await sendSocket(ws, 3, { method: 'auth.getAuthUri', parameters: { social: 'vkontakte', dev: 1 } }, 'auth')
+    await sendSocket(ws, 3, { method: 'auth.getAuthUri', parameters: { social: 'vkontakte' } }, 'auth')
 
   const userPanel = () => {
     const { auth, name, balance, picture } = user.user
