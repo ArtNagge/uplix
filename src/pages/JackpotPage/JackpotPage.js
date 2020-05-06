@@ -208,7 +208,7 @@ class JackpotPage extends PureComponent {
   }
 
   render() {
-    const { bets, lang, history, result, topDay, time, start } = this.props
+    const { bets, lang, history, result, day_top, time, start } = this.props
     const { purple, pink } = bets
 
     const pinkTotal = Math.round(pink.reduce((a, { bets }) => a + Number(bets), 0))
@@ -241,13 +241,13 @@ class JackpotPage extends PureComponent {
                       <div className={s.content}>
                         <div className={s.jackpot_top_avatar}>
                           <div className={s.jackpot_top_avatarElips}>
-                            <img src={topDay.avatar} alt="" />
+                            <img src={day_top.avatar} alt="" />
                           </div>
                         </div>
                         <div className={s.jackpot_top_info}>
-                          <span className={s.jackpot_top_info_name}>{topDay.name}</span>
+                          <span className={s.jackpot_top_info_name}>{day_top.name}</span>
                           <div className={s.jackpot_top_info_win}>
-                            {topDay.win} <SvgIcon classes={s.jackpot_top_info_win_icon} icon="gem" />
+                            {day_top.win} <SvgIcon classes={s.jackpot_top_info_win_icon} icon="gem" />
                           </div>
                         </div>
                       </div>
@@ -325,13 +325,13 @@ class JackpotPage extends PureComponent {
                       <div className={s.content}>
                         <div className={s.jackpot_top_avatar}>
                           <div className={s.jackpot_top_avatarElips}>
-                            <img src={topDay.avatar} alt="" />
+                            <img src={day_top.avatar} alt="" />
                           </div>
                         </div>
                         <div className={s.jackpot_top_info}>
-                          <span className={s.jackpot_top_info_name}>{topDay.name}</span>
+                          <span className={s.jackpot_top_info_name}>{day_top.name}</span>
                           <div className={s.jackpot_top_info_win}>
-                            {topDay.win} <SvgIcon classes={s.jackpot_top_info_win_icon} icon="gem" />
+                            {day_top.win} <SvgIcon classes={s.jackpot_top_info_win_icon} icon="gem" />
                           </div>
                         </div>
                       </div>
@@ -368,7 +368,7 @@ const mapStateToProps = ({
   jackpot: {
     bets,
     history,
-    topDay,
+    day_top,
     result,
     odds,
     timer: { time, start },
@@ -377,7 +377,7 @@ const mapStateToProps = ({
   lang: { data: lang },
   socket: { ws, connect, countConnect },
 }) => {
-  return { ws, connect, countConnect, bets, history, topDay, user, result, lang, odds, time, start }
+  return { ws, connect, countConnect, bets, history, day_top, user, result, lang, odds, time, start }
 }
 
 export default connect(mapStateToProps, { connectCounter, appLoad })(JackpotPage)

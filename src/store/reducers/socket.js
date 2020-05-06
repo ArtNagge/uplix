@@ -2,6 +2,7 @@ const socket = {
   ws: undefined,
   connect: false,
   countConnect: 1,
+  subscribe: undefined,
 }
 
 export default (state = socket, action) => {
@@ -13,12 +14,13 @@ export default (state = socket, action) => {
       }
     }
     case 'SOCKET_CONNECT': {
-      const { ws, connect } = action.payload
+      const { ws, connect, subscribe } = action.payload
 
       return {
         ...state,
         ws,
         connect,
+        subscribe,
       }
     }
     default:

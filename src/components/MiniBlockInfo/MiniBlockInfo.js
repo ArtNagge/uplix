@@ -13,7 +13,7 @@ const MiniBlockInfo = ({ title, description, icon, width, copy }) => {
       onClick={() => copy && copyToClipboard(description)}
     >
       <div className={cn(s.miniBlock_info, !icon && s.miniBlock_info_full)}>
-        <span className={cn(s.miniBlock_info_title, !icon && s.miniBlock_info_title_full)}>{title}</span>
+        <span className={cn(s.miniBlock_info_title, !icon && s.miniBlock_info_title_full)}>{String(title)}</span>
         <span className={cn(s.miniBlock_info_description, !icon && s.miniBlock_info_description_full)}>
           {description}
         </span>

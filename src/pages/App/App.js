@@ -40,7 +40,6 @@ import Loader from '../../components/Loader'
 import Modal from '../../components/Modal'
 import checkLangBrowser from '../../utils/checkLangBrowser'
 import checkLang from '../../utils/checkLang'
-import clearMethod from '../../utils/clearMethod'
 
 class App extends PureComponent {
   state = {
@@ -100,12 +99,13 @@ class App extends PureComponent {
 
       this.addSubscribe('online')
 
-      socketConnect(this.ws, true)
+      socketConnect(this.ws, true, this.addSubscribe)
     }
 
     this.ws.onmessage = (data) => {
       const { data: response } = data
       const info = JSON.parse(response)
+      const guestId = (info.channel && info.channel.split('_')[1]) || 0
       console.log(info)
 
       switch (info.seq || info.channel) {
@@ -118,10 +118,12 @@ class App extends PureComponent {
           appLoad(false)
           break
         }
+        case 'payments': {
+          withdrawal(info.message)
+          break
+        }
         case 'withdrawal': {
-          // TODO: channels
           toast(info.response, { toastId: 1 })
-          withdrawal(info)
           break
         }
         case 'tasksGetId': {
@@ -130,6 +132,10 @@ class App extends PureComponent {
         }
         case 'usersGetById': {
           guestsInfo(info.response)
+          break
+        }
+        case `payments_${guestId}`: {
+          withdrawal(info.message, true)
           break
         }
         case 'guestsHistory': {
@@ -171,6 +177,10 @@ class App extends PureComponent {
         }
         case 'chat': {
           chat(info.message)
+          break
+        }
+        case 'chatSend': {
+          info.status === 'error' && toast(info.response, { toastId: 4 })
           break
         }
         case 'wheel': {
@@ -230,14 +240,13 @@ class App extends PureComponent {
     const { subscribes } = this.state
     const indexElem = subscribes.findIndex((v) => v === val)
 
-    if (indexElem < 0) {
+    if (indexElem < 0 && !dell) {
       return this.setState({ subscribes: [...subscribes, val] }, () => sendSocket(this.ws, 2, this.state.subscribes))
     }
 
     if (indexElem >= 0 && dell) {
-      return this.setState({ subscribes: [...subscribes.slice(0, indexElem), subscribes.slice(indexElem + 1)] }, () =>
-        sendSocket(this.ws, 2, this.state.subscribes)
-      )
+      const newArr = [...subscribes.slice(0, indexElem), ...subscribes.slice(indexElem + 1)]
+      return this.setState({ subscribes: newArr }, () => sendSocket(this.ws, 2, newArr))
     }
   }
 

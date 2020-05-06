@@ -4,8 +4,7 @@ function checkLang(lang, exp) {
 
   keys.forEach((e) => {
     if (expression === null || expression === undefined || expression[e] === undefined) {
-      console.log(exp)
-      return (expression = '----')
+      return (expression = '')
     }
     expression = expression[e]
   })

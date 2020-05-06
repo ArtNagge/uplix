@@ -1,3 +1,6 @@
+import dayjs from 'dayjs'
+import { v4 as uuid } from 'uuid'
+
 const userBet = (bet) => (dispatch) => {
   try {
     const data = {
@@ -11,15 +14,41 @@ const userBet = (bet) => (dispatch) => {
   }
 }
 
-const withdrawal = ({ response, status }) => (dispatch) => {
+const withdrawal = ({ data: vData, action, amount }, guest) => (dispatch) => {
   try {
-    // if (status === 'success') {
-    //   const data = {
-    //     type: 'WITHDRAWAL',
-    //     payload: response,
-    //   }
-    //   return dispatch(data)
-    // }
+    if (guest) {
+      if (action === 3) {
+        const data = {
+          type: 'WITHDRAWAL_GUEST',
+          payload: {
+            section: 'history',
+            el: { id: uuid(), time: dayjs().valueOf() / 1000, data: vData, value: amount, action: 3 },
+          },
+        }
+        return dispatch(data)
+      }
+    } else {
+      if (action === 3) {
+        const data = {
+          type: 'WITHDRAWAL',
+          payload: {
+            section: 'history',
+            el: { id: uuid(), time: dayjs().valueOf() / 1000, data: vData, value: amount, action: 3 },
+          },
+        }
+        return dispatch(data)
+      }
+      if (action === 2) {
+        const data = {
+          type: 'WITHDRAWAL',
+          payload: {
+            section: 'payments',
+            el: { id: uuid(), time: dayjs().valueOf() / 1000, data: vData, value: amount, action: 3 },
+          },
+        }
+        return dispatch(data)
+      }
+    }
   } catch (error) {
     console.log(error)
   }

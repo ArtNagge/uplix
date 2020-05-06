@@ -3,8 +3,8 @@ const jackpot = {
     purple: [],
     pink: [],
   },
-  topDay: {
-    name: '---',
+  day_top: {
+    name: '',
     avatar: '',
     win: 0,
   },
@@ -23,7 +23,7 @@ export default function (state = jackpot, action) {
     case 'DAY_TOP': {
       return {
         ...state,
-        topDay: action.payload,
+        day_top: action.payload,
       }
     }
     case 'SERVER_CLIENT_DIFF': {
@@ -38,11 +38,13 @@ export default function (state = jackpot, action) {
         bets: { ...state.bets, ...action.payload.bets },
         odds: action.payload.odds,
         history: action.payload.history,
-        topDay: {
-          name: action.payload.day_top.user.name,
-          avatar: action.payload.day_top.user.picture,
-          win: action.payload.day_top.amount,
-        },
+        ...(action.payload.day_top && {
+          day_top: {
+            name: action.payload.day_top.user.name,
+            avatar: action.payload.day_top.user.picture,
+            win: action.payload.day_top.amount,
+          },
+        }),
       }
     }
     case 'JACKPOT_HISTORY': {

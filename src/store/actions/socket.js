@@ -1,7 +1,7 @@
-const socketConnect = (ws, connect) => (dispatch) => {
+const socketConnect = (ws, connect, subscribe) => (dispatch) => {
   const data = {
     type: 'SOCKET_CONNECT',
-    payload: { ws, connect },
+    payload: { ws, connect, subscribe },
   }
   return dispatch(data)
 }
